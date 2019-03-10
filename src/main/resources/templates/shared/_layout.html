@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Studio Admin Toolkit</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" th:href="@{/css/application.css}">
+    </head>
+    <body>
+        <header th:insert="~{shared/_header}"></header>
+        <h1>Studio Admin Toolkit</h1>
+        <th:block layout:fragment="content"></th:block>
+    </body>
+</html>
