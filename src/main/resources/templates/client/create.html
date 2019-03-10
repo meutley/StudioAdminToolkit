@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
+    <head>
+        <title>Clients - Create</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-10 mx-auto">
+                        <form action="#" th:action="@{/client/create}" th:object="${client}" method="POST" class="form bg-white text-dark rounded p-4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Create New Client</h2>
+                                </div>
+                            </div>
+                            <div th:replace="~{client/_edit_form}"></div>
+                            <div class="row">
+                                <div class="col-12 text-right">
+                                    <button type="submit" class="btn btn-lg btn-primary"><i class="fa fa-check"></i>&nbsp;Create</button>
+                                    <a href="/client" class="btn btn-lg btn-danger"><i class="fa fa-times"></i>&nbsp;Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

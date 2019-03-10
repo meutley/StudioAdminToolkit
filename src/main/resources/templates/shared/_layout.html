@@ -4,11 +4,18 @@
         <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Studio Admin Toolkit</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" th:href="@{/css/application.css}">
     </head>
     <body>
         <header th:insert="~{shared/_header}"></header>
-        <h1>Studio Admin Toolkit</h1>
+        <div class="container-fluid mb-4">
+            <div class="row">
+                <div class="col-12">
+                    <h1>Studio Admin Toolkit</h1>
+                </div>
+            </div>
+        </div>
         <th:block layout:fragment="content"></th:block>
     </body>
 </html>
