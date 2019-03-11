@@ -8,7 +8,8 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-10 mx-auto">
-                        <form action="#" th:action="@{/client/create}" th:object="${client}" method="POST" class="form bg-white text-dark rounded p-4">
+                        <form action="#" th:action="'/client/' + ${client.id} + '/edit'" th:object="${client}" method="POST" class="form bg-white text-dark rounded p-4">
+                            <input id="id" name="id" type="hidden" th:value="${client.id}" />
                             <div class="row">
                                 <div class="col-12">
                                     <h2>

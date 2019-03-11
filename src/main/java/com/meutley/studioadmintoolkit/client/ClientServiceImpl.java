@@ -1,5 +1,7 @@
 package com.meutley.studioadmintoolkit.client;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +28,16 @@ public class ClientServiceImpl implements ClientService {
         this.clientRepository.save(existingClient);
 
         return existingClient;
+    }
+
+    @Override
+    public List<Client> getAll() {
+        return this.clientRepository.findAll();
+    }
+    
+    @Override
+    public Client getByEmail(String email) {
+        return this.clientRepository.findByEmail(email);
     }
     
     @Override
