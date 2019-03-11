@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
+    <head>
+        <title>Studio Sessions</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Studio Sessions</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div th:if="${studioSessions.isEmpty()}">
+                            <p class="alert alert-warning"><i class="fa fa-warning"></i> There are currently no studio sessions to show. <a href="#">Create a studio session now.</a></p>
+                        </div>
+                        <div th:unless="${studioSessions.isEmpty()}">
+                            <div class="row pb-3">
+                                <div class="col-12">
+                                    <a href="/studio-session/create" class="btn btn-lg btn-success"><i class="fa fa-plus"></i> New Studio Session</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-condensed table-striped bg-light">
+                                        <thead>
+                                            <tr>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="studioSession : ${studioSessions}" th:data-id="${studioSession.id}">
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
