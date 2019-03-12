@@ -1,31 +1,29 @@
-package com.meutley.studioadmintoolkit.client;
+package com.meutley.studioadmintoolkit.studiosession;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.meutley.studioadmintoolkit.client.Client;
 import com.meutley.studioadmintoolkit.core.model.SoftDeleteEntity;
-import com.meutley.studioadmintoolkit.studiosession.StudioSession;
 
 @Entity
-@Table(name = "client")
+@Table(name = "studio_session")
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
-public class Client extends SoftDeleteEntity implements Serializable {
+public class StudioSession extends SoftDeleteEntity implements Serializable {
 
-    private static final long serialVersionUID = -1651846186451658L;
-
+    private static final long serialVersionUID = -1654892502416448L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -36,15 +34,12 @@ public class Client extends SoftDeleteEntity implements Serializable {
     @Size(min = 5, max = 100, message = "Name must be between 5 and 100 characters in length")
     private String name;
 
-    @Column(name = "email", unique = true)
-    @Email(message = "Email must be a valid e-mail address")
-    private String email;
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
-    @OneToMany(mappedBy = "client")
-    private List<StudioSession> studioSessions = new ArrayList<>();
-
-    public String getEmail() {
-        return this.email;
+    public Client getClient() {
+        return this.client;
     }
     
     public long getId() {
@@ -55,21 +50,12 @@ public class Client extends SoftDeleteEntity implements Serializable {
         return this.name;
     }
 
-    public List<StudioSession> getStudioSessions() {
-        return this.studioSessions;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-    public void setEmail(String value) {
-        this.email = value;
-    }
-    
     public void setName(String value) {
         this.name = value;
-    }
-
-    public void addStudioSession(StudioSession studioSession) {
-        this.studioSessions.add(studioSession);
-        studioSession.setClient(this);
     }
     
 }

@@ -22,13 +22,11 @@ public class ClientController {
     private final ClientService clientService;
 
     public ClientController(ClientService clientService) {
-
         this.clientService = clientService;
     }
 
     @GetMapping(value = { "", "/index" })
     public String index(Model model) {
-        
         List<Client> clients = this.clientService.getAll();
         model.addAttribute("clients", clients);
         return "client/index";
@@ -36,7 +34,6 @@ public class ClientController {
 
     @GetMapping("/{id}/details")
     public String details(@PathVariable int id, Model model) {
-        
         Client client = this.clientService.getById(id);
         model.addAttribute("client", client);
         return "client/details";
@@ -44,7 +41,6 @@ public class ClientController {
 
     @GetMapping("/create")
     public String create(Model model) {
-        
         if (!model.containsAttribute("client")) {
             model.addAttribute("client", new Client());
         }
@@ -73,7 +69,6 @@ public class ClientController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable int id, Model model) {
-        
         if (!model.containsAttribute("client")) {
             model.addAttribute("client", this.clientService.getById(id));
         }
