@@ -4,10 +4,18 @@
     <body>
         <div class="row form-group">
             <div class="col-12">
+                <label for="client">Client <span class="text-danger">*</span></label>
+                <select class="form-control form-control-lg" th:field="${viewModel.selectedClientId}">
+                    <option th:each="client : ${viewModel.clients}" th:value="${client.id}" th:selected="${client.id} eq ${clientId}" th:text="${client.name}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-12">
                 <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                <input type="text" id="name" th:field="*{name}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('name')} ? is-invalid : ''" />
+                <input type="text" id="name" th:field="*{studioSession.name}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('studioSession.name')} ? is-invalid : ''" />
                 <div class="invalid-feedback">
-                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    <span class="text-danger" th:if="${#fields.hasErrors('studioSession.name')}" th:errors="*{studioSession.name}"></span>
                 </div>
             </div>
         </div>

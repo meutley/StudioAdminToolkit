@@ -14,6 +14,11 @@ public class StudioSessionServiceImpl implements StudioSessionService {
     }
 
     @Override
+    public StudioSession create(StudioSession studioSession) {
+        return studioSessionRepository.save(studioSession);
+    }
+
+    @Override
     public List<StudioSession> getByClientId(int clientId) {
         return studioSessionRepository.getByClientId(clientId);
     }
