@@ -4,10 +4,10 @@ import java.util.List;
 
 public interface ClientService {
 
-    Client create(Client client);
-    Client edit(int id, Client client);
-    List<Client> getAll();
-    Client getByEmail(String email);
-    Client getById(int id);
+    ClientDto create(ClientDto client);
+    ClientDto edit(int id, ClientDto client);
+    List<ClientDto> getAll();
+    ClientDto getByEmail(String email);
+    ClientDto getById(int id);
     
 }

@@ -2,9 +2,11 @@ package com.meutley.studioadmintoolkit.studiosession;
 
 import java.util.List;
 
+import com.meutley.studioadmintoolkit.client.ClientDto;
+
 public interface StudioSessionService {
 
-    StudioSession create(StudioSession studioSession);
-    List<StudioSession> getByClientId(int clientId);
+    StudioSessionDto create(StudioSessionDto studioSession, ClientDto client);
+    List<StudioSessionDto> getByClientId(int clientId);
     
 }

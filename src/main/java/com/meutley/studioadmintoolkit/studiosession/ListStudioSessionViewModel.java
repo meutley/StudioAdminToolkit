@@ -4,31 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.meutley.studioadmintoolkit.client.Client;
+import com.meutley.studioadmintoolkit.client.ClientDto;
 
 public class ListStudioSessionViewModel {
 
     private Optional<Integer> selectedClientId = Optional.empty();
-    private List<Client> clients = new ArrayList<>();
-    private List<StudioSession> studioSessions = new ArrayList<>();
+    private List<ClientDto> clients = new ArrayList<>();
+    private List<StudioSessionDto> studioSessions = new ArrayList<>();
 
     public static class Builder {
 
         private Optional<Integer> builderSelectedClientId = Optional.empty();
-        private List<Client> builderClients = new ArrayList<>();
-        private List<StudioSession> builderStudioSessions = new ArrayList<>();
+        private List<ClientDto> builderClients = new ArrayList<>();
+        private List<StudioSessionDto> builderStudioSessions = new ArrayList<>();
 
         public Builder selectedClientId(Optional<Integer> selectedClientId) {
             this.builderSelectedClientId = selectedClientId;
             return this;
         }
 
-        public Builder clients(List<Client> clients) {
+        public Builder clients(List<ClientDto> clients) {
             this.builderClients = clients;
             return this;
         }
 
-        public Builder studioSessions(List<StudioSession> studioSessions) {
+        public Builder studioSessions(List<StudioSessionDto> studioSessions) {
             this.builderStudioSessions = studioSessions;
             return this;
         }
@@ -47,11 +47,11 @@ public class ListStudioSessionViewModel {
         return this.selectedClientId;
     }
 
-    public List<Client> getClients() {
+    public List<ClientDto> getClients() {
         return this.clients;
     }
 
-    public List<StudioSession> getStudioSessions() {
+    public List<StudioSessionDto> getStudioSessions() {
         return this.studioSessions;
     }
 
@@ -59,11 +59,11 @@ public class ListStudioSessionViewModel {
         this.selectedClientId = selectedClientId;
     }
 
-    public void setClients(List<Client> clients) {
+    public void setClients(List<ClientDto> clients) {
         this.clients = clients;
     }
 
-    public void setStudioSessions(List<StudioSession> studioSessions) {
+    public void setStudioSessions(List<StudioSessionDto> studioSessions) {
         this.studioSessions = studioSessions;
     }
 

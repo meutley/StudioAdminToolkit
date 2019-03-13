@@ -5,27 +5,27 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.meutley.studioadmintoolkit.client.Client;
+import com.meutley.studioadmintoolkit.client.ClientDto;
 
 public class CreateStudioSessionViewModel {
 
-    private List<Client> clients;
+    private List<ClientDto> clients;
     @Valid
-    private StudioSession studioSession;
+    private StudioSessionDto studioSession;
     private Optional<Integer> selectedClientId;
 
     public static class Builder {
 
-        private List<Client> builderClients;
-        private StudioSession builderStudioSession;
+        private List<ClientDto> builderClients;
+        private StudioSessionDto builderStudioSession;
         private Optional<Integer> builderSelectedClientId;
 
-        public Builder clients(List<Client> clients) {
+        public Builder clients(List<ClientDto> clients) {
             this.builderClients = clients;
             return this;
         }
 
-        public Builder studioSession(StudioSession studioSession) {
+        public Builder studioSession(StudioSessionDto studioSession) {
             this.builderStudioSession = studioSession;
             return this;
         }
@@ -45,12 +45,12 @@ public class CreateStudioSessionViewModel {
         
     }
 
-    public List<Client> getClients() {
+    public List<ClientDto> getClients() {
         return this.clients;
     }
 
     @Valid
-    public StudioSession getStudioSession() {
+    public StudioSessionDto getStudioSession() {
         return this.studioSession;
     }
 
@@ -58,11 +58,11 @@ public class CreateStudioSessionViewModel {
         return this.selectedClientId;
     }
 
-    public void setClients(List<Client> clients) {
+    public void setClients(List<ClientDto> clients) {
         this.clients = clients;
     }
 
-    public void setStudioSession(StudioSession studioSession) {
+    public void setStudioSession(StudioSessionDto studioSession) {
         this.studioSession = studioSession;
     }
 
