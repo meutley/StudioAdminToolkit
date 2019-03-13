@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -22,6 +23,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ClientServiceTests {
 
+    @Mock
+    private ModelMapper modelMapper;
     @Mock
     private ClientRepository clientRepository;
 
@@ -32,12 +35,15 @@ public class ClientServiceTests {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         
-        target = new ClientServiceImpl(clientRepository);
+        target = new ClientServiceImpl(
+            modelMapper,
+            clientRepository
+        );
     }
 
     @Test
     public void createShouldCallRepository() {
-        target.create(new Client());
+        target.create(new ClientDto());
 
         verify(clientRepository, times(1)).save(any(Client.class));
     }
@@ -46,11 +52,11 @@ public class ClientServiceTests {
     public void createShouldReturnNewClientObject() {
         when(clientRepository.save(any(Client.class))).thenReturn(new Client());
 
-        Client input = new Client();
+        ClientDto input = new ClientDto();
         input.setName("Test Client");
         input.setEmail("testclient@satk");
 
-        Client result = target.create(input);
+        ClientDto result = target.create(input);
 
         assertNotNull(result);
     }
@@ -59,7 +65,7 @@ public class ClientServiceTests {
     public void editShouldCallRepositoryGetOne() {
         when(clientRepository.getOne(anyInt())).thenReturn(new Client());
 
-        target.edit(1, new Client());
+        target.edit(1, new ClientDto());
 
         verify(clientRepository, times(1)).getOne(anyInt());
     }
@@ -68,7 +74,7 @@ public class ClientServiceTests {
     public void editShouldCallRepositorySaveWithUpdatedEntity() {
         when(clientRepository.getOne(anyInt())).thenReturn(new Client());
 
-        Client input = new Client();
+        ClientDto input = new ClientDto();
         input.setName("Test Client");
         input.setEmail("testclient@satk");
 
@@ -84,11 +90,11 @@ public class ClientServiceTests {
     public void editShouldReturnUpdatedEntity() {
         when(clientRepository.getOne(anyInt())).thenReturn(new Client());
 
-        Client input = new Client();
+        ClientDto input = new ClientDto();
         input.setName("Test Client");
         input.setEmail("testclient@satk");
 
-        Client actual = target.edit(0, input);
+        ClientDto actual = target.edit(0, input);
 
         assertEquals(input.getName(), actual.getName());
         assertEquals(input.getEmail(), actual.getEmail());

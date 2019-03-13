@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import com.meutley.studioadmintoolkit.client.Client;
+import com.meutley.studioadmintoolkit.client.ClientDto;
 import com.meutley.studioadmintoolkit.client.ClientService;
 
 import org.springframework.stereotype.Controller;
@@ -42,7 +42,7 @@ public class StudioSessionController {
 
     @GetMapping(value = { "/list" })
     public String list(@RequestParam("clientId") Optional<Integer> clientId, Model model) {
-        List<StudioSession> studioSessions = new ArrayList<>();
+        List<StudioSessionDto> studioSessions = new ArrayList<>();
         if (clientId.isPresent()) {
             studioSessions.addAll(this.studioSessionService.getByClientId(clientId.get()));
         }
@@ -62,7 +62,7 @@ public class StudioSessionController {
         if (!model.containsAttribute("viewModel")) {
             CreateStudioSessionViewModel viewModel = new CreateStudioSessionViewModel.Builder()
                 .clients(this.getClientsForList())
-                .studioSession(new StudioSession())
+                .studioSession(new StudioSessionDto())
                 .selectedClientId(Optional.empty())
                 .build();
             model.addAttribute("viewModel", viewModel);
@@ -81,15 +81,14 @@ public class StudioSessionController {
             return "redirect:/studio-session/create";
         }
 
-        StudioSession studioSession = viewModel.getStudioSession();
-        Client client = this.clientService.getById(viewModel.getSelectedClientId().get());
-        studioSession.setClient(client);
-        this.studioSessionService.create(studioSession);
+        StudioSessionDto studioSession = viewModel.getStudioSession();
+        ClientDto client = this.clientService.getById(viewModel.getSelectedClientId().get());
+        this.studioSessionService.create(studioSession, client);
         return String.format("redirect:/studio-session/list?clientId=%s", viewModel.getSelectedClientId().get());
     }
 
-    private final List<Client> getClientsForList() {
-        List<Client> clients = this.clientService.getAll();
+    private final List<ClientDto> getClientsForList() {
+        List<ClientDto> clients = this.clientService.getAll();
         clients.sort(Comparator.comparing(c -> c.getName()));
         return clients;
     }

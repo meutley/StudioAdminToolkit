@@ -1,48 +1,54 @@
 package com.meutley.studioadmintoolkit.client;
 
+import java.util.Arrays;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClientServiceImpl implements ClientService {
 
+    private final ModelMapper modelMapper;
     private final ClientRepository clientRepository;
 
     public ClientServiceImpl(
+        ModelMapper modelMapper,
         ClientRepository clientRepository
     ) {
+        this.modelMapper = modelMapper;
         this.clientRepository = clientRepository;
     }
     
     @Override
-    public Client create(Client client) {
-        return this.clientRepository.save(client);
+    public ClientDto create(ClientDto client) {
+        Client clientEntity = this.clientRepository.save(modelMapper.map(client, Client.class));
+        return modelMapper.map(clientEntity, ClientDto.class);
     }
 
     @Override
-    public Client edit(int id, Client client) {
+    public ClientDto edit(int id, ClientDto client) {
         Client existingClient = this.clientRepository.getOne(id);
         existingClient.setName(client.getName());
         existingClient.setEmail(client.getEmail());
         this.clientRepository.save(existingClient);
 
-        return existingClient;
+        return modelMapper.map(existingClient, ClientDto.class);
     }
 
     @Override
-    public List<Client> getAll() {
-        return this.clientRepository.findAll();
+    public List<ClientDto> getAll() {
+        return Arrays.asList(modelMapper.map(this.clientRepository.findAll(), ClientDto[].class));
     }
     
     @Override
-    public Client getByEmail(String email) {
-        return this.clientRepository.findByEmail(email);
+    public ClientDto getByEmail(String email) {
+        return modelMapper.map(this.clientRepository.findByEmail(email), ClientDto.class);
     }
     
     @Override
-    public Client getById(int id) {
-        return this.clientRepository.getOne(id);
+    public ClientDto getById(int id) {
+        return modelMapper.map(this.clientRepository.getOne(id), ClientDto.class);
     }
 
 }
