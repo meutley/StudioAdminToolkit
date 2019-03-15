@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
+    <head>
+        <title th:text="'Studio Sessions - Edit (' + ${viewModel.studioSession.name} + ')'"></title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-10 mx-auto">
+                        <form th:action="@{/studio-session/{id}/edit(id=${viewModel.studioSession.id})}" th:object="${viewModel}" method="POST" class="form bg-white text-dark rounded p-4">
+                            <input type="hidden" name="studioSession.id" th:value="${viewModel.studioSession.id}" />
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Edit Studio Session</h2>
+                                    <small class="text-muted" th:text="${viewModel.studioSession.name}"></small>
+                                </div>
+                            </div>
+                            <div th:replace="~{studio-session/_edit-form}"></div>
+                            <div class="row">
+                                <div class="col-12 text-right">
+                                    <button type="submit" class="btn btn-lg btn-primary"><i class="fa fa-check"></i>&nbsp;Create</button>
+                                    <a th:href="@{/studio-session/list/{clientId}(clientId=${selectedClientId})}" class="btn btn-lg btn-danger"><i class="fa fa-times"></i>&nbsp;Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

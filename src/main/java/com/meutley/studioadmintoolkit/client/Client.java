@@ -47,7 +47,7 @@ public class Client extends SoftDeleteEntity implements Serializable {
         return this.email;
     }
     
-    public long getId() {
+    public int getId() {
         return this.id;
     }
 

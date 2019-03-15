@@ -87,9 +87,7 @@ public class ClientController {
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.client", bindingResult);
             redirectAttributes.addFlashAttribute("client", client);
-            if (!redirectAttributes.containsAttribute("id")) {
-                redirectAttributes.addAttribute("id", id);
-            }
+            redirectAttributes.addAttribute("id", id);
             return "redirect:/client/{id}/edit";
         }
         

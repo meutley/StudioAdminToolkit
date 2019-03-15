@@ -23,7 +23,7 @@ public class StudioSessionDto implements Serializable {
         return this.client;
     }
     
-    public long getId() {
+    public int getId() {
         return this.id;
     }
 

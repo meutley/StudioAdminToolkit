@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 import com.meutley.studioadmintoolkit.client.ClientDto;
 
-public class CreateStudioSessionViewModel {
+public class StudioSessionDetailsViewModel {
 
     private List<ClientDto> clients;
     @Valid
@@ -35,8 +35,8 @@ public class CreateStudioSessionViewModel {
             return this;
         }
 
-        public CreateStudioSessionViewModel build() {
-            CreateStudioSessionViewModel viewModel = new CreateStudioSessionViewModel();
+        public StudioSessionDetailsViewModel build() {
+            StudioSessionDetailsViewModel viewModel = new StudioSessionDetailsViewModel();
             viewModel.setClients(this.builderClients);
             viewModel.setStudioSession(this.builderStudioSession);
             viewModel.setSelectedClientId(this.builderSelectedClientId);

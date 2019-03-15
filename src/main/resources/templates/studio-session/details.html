@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
+    <head>
+        <title th:text="'Studio Sessions - Details (' + ${studioSession.name} + ')'"></title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-10 mx-auto">
+                        <div class="bg-white text-dark rounded p-4">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>Studio Session Details</h2>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong class="text-muted">Name</strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span th:text="${studioSession.name}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3 pt-3 text-right border-top">
+                                <div class="col-12">
+                                    <a th:href="@{/studio-session/{id}/edit(id=${studioSession.id})}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a>
+                                    <a th:href="@{/studio-session/{id}/delete(id=${studioSession.id})}" id="delete-button" class="btn btn-danger"><i class="fa fa-times"></i> Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
