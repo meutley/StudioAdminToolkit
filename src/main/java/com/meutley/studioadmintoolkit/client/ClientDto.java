@@ -21,6 +21,8 @@ public class ClientDto implements Serializable {
     @Email(message = "Email must be a valid e-mail address")
     private String email;
 
+    private boolean isActive;
+
     private MailingAddressDto mailingAddress = new MailingAddressDto();
 
     public String getEmail() {
@@ -39,6 +41,10 @@ public class ClientDto implements Serializable {
         return this.name;
     }
 
+    public boolean getIsActive() {
+        return this.isActive;
+    }
+
     public void setEmail(String value) {
         this.email = value;
     }
@@ -53,6 +59,10 @@ public class ClientDto implements Serializable {
     
     public void setName(String value) {
         this.name = value;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
     
 }
