@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            $('document').ready(() => {
+                if (!$('input#isBillable').is(':checked')) {
+                    $('div#unit-price-row').hide();
+                }
+                
+                $('input#isBillable').on('change', function () {
+                    var $target = $('div#unit-price-row');
+                    var isBillable = $(this).is(':checked');
+                    if (isBillable) {
+                        $target.slideDown();
+                    } else {
+                        $target.slideUp();
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="row form-group">
+            <div class="col-12">
+                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                <input type="text" id="name" th:field="*{name}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('name')} ? is-invalid : ''" />
+                <div class="invalid-feedback">
+                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-12">
+                <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
+                <input type="text" id="description" th:field="*{description}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('description')} ? is-invalid : ''" />
+                <div class="invalid-feedback">
+                    <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row form-check">
+            <div class="col-12">
+                <label for="isBillable" class="form-label">
+                    <input type="checkbox" id="isBillable" class="form-check-input" th:field="*{isBillable}" /> Billable?
+                </label>
+            </div>
+        </div>
+        <div class="row form-group" id="unit-price-row">
+            <div class="col-12">
+                <label for="unitPrice" class="form-label">Unit Price ($) <span class="text-danger">*</span></label>
+                <input type="text" id="unitPrice" th:field="*{unitPrice}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('unitPrice')} ? is-invalid : ''" />
+                <div class="invalid-feedback">
+                    <span class="text-danger" th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}"></span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

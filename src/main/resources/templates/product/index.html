@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
+    <head>
+        <title>Products</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Products</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div th:if="${products.isEmpty()}">
+                            <p class="alert alert-warning"><i class="fa fa-warning"></i> There are currently no products defined. <a href="/product/create">Create a product now.</a></p>
+                        </div>
+                        <div th:unless="${products.isEmpty()}">
+                            <div class="row pb-3">
+                                <div class="col-12">
+                                    <a href="/product/create" class="btn btn-lg btn-success"><i class="fa fa-plus"></i> New Product</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-condensed table-striped bg-light">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <th>Billable?</th>
+                                                <th>Unit Price</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="product : ${products}" th:data-id="${product.id}">
+                                                <td th:text="${product.name}"></td>
+                                                <td th:text="${product.description}"></td>
+                                                <td th:text="${product.isBillable ? 'Yes' : 'No'}"></td>
+                                                <td th:text="${#numbers.formatCurrency(product.unitPrice)}"></td>
+                                                <td class="text-right text-nowrap">
+                                                    <a th:href="@{/product/{id}/edit(id=${product.id})}" class="btn btn-dark">
+                                                        <i class="fa fa-edit"></i> Edit
+                                                    </a>
+                                                    <a th:href="@{/product/{id}/delete(id=${product.id})}" class="btn btn-danger delete-product-button">
+                                                        <i class="fa fa-times"></i> Delete
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
