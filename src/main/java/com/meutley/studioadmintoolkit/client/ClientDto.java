@@ -1,11 +1,14 @@
 package com.meutley.studioadmintoolkit.client;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.meutley.studioadmintoolkit.invoice.InvoiceDto;
 import com.meutley.studioadmintoolkit.mailingaddress.MailingAddressDto;
 
 public class ClientDto implements Serializable {
@@ -23,6 +26,8 @@ public class ClientDto implements Serializable {
 
     private boolean isActive;
 
+    private List<InvoiceDto> invoices = new ArrayList<>();
+    
     private MailingAddressDto mailingAddress = new MailingAddressDto();
 
     public String getEmail() {
@@ -31,6 +36,10 @@ public class ClientDto implements Serializable {
     
     public long getId() {
         return this.id;
+    }
+
+    public List<InvoiceDto> getInvoices() {
+        return this.invoices;
     }
 
     public MailingAddressDto getMailingAddress() {
@@ -53,6 +62,10 @@ public class ClientDto implements Serializable {
         this.id = id;
     }
 
+    public void setInvoices(List<InvoiceDto> invoices) {
+        this.invoices = invoices;
+    }
+
     public void setMailingAddress(MailingAddressDto mailingAddress) {
         this.mailingAddress = mailingAddress;
     }
@@ -63,6 +76,16 @@ public class ClientDto implements Serializable {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+    public void addInvoice(InvoiceDto invoice) {
+        this.invoices.add(invoice);
+        invoice.setClient(this);
+    }
+    
+    public void removeInvoice(InvoiceDto invoice) {
+        this.invoices.remove(invoice);
+        invoice.setClient(null);
     }
     
 }

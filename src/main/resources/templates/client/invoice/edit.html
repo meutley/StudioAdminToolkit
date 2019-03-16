@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
+    <head>
+            <title th:text="'Clients - Edit Invoice (' + ${viewModel.client.name} + ') (' + ${viewModel.invoice.invoiceNumber} + ')'"></title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-10 mx-auto">
+                        <form action="#" th:action="@{/client/{clientId}/invoice/{id}/edit(clientId=${viewModel.client.id}, id=${viewModel.invoice.id})}" th:object="${viewModel}" method="POST" class="form bg-white text-dark rounded p-4">
+                            <input type="hidden" name="invoice.id" th:value="${viewModel.invoice.id}" />
+                            <div class="row">
+                                <div class="col-12">
+                                    <h2>
+                                        Create New Invoice
+                                        <small class="text-muted" th:text="${viewModel.client.name}"></small>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div th:replace="~{client/invoice/_edit-form}"></div>
+                            <div class="row">
+                                <div class="col-12 text-right">
+                                    <button type="submit" class="btn btn-lg btn-primary"><i class="fa fa-check"></i>&nbsp;Create</button>
+                                    <a th:href="@{/client/{clientId}/invoice(clientId=${viewModel.client.id})}" class="btn btn-lg btn-danger"><i class="fa fa-times"></i>&nbsp;Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
