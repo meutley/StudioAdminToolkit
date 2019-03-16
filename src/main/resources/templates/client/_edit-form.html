@@ -1,22 +1,104 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
+        <script type="text/javascript">
+            $(document).ready(() => {
+                if (!$('input#hasMailingAddress').is(':checked')) {
+                    $('div#mailing-address-form').hide();
+                }
+
+                $('input#hasMailingAddress').on('change', function () {
+                    if ($(this).is(':checked')) {
+                        $('div#mailing-address-form').slideDown();
+                    } else {
+                        $('div#mailing-address-form').slideUp();
+                    }
+                });
+            });
+        </script>
+    </head>
     <body>
         <div class="row form-group">
             <div class="col-12">
                 <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                <input type="text" id="name" th:field="*{name}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('name')} ? is-invalid : ''" />
+                <input type="text" id="name" th:field="*{client.name}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('client.name')} ? is-invalid : ''" />
                 <div class="invalid-feedback">
-                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    <span class="text-danger" th:if="${#fields.hasErrors('client.name')}" th:errors="*{client.name}"></span>
                 </div>
             </div>
         </div>
         <div class="row form-group">
             <div class="col-12">
                 <label for="email" class="form-label">Email Address</label>
-                <input type="text" id="email" th:field="*{email}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('email')} ? is-invalid : ''" />
+                <input type="text" id="email" th:field="*{client.email}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('client.email')} ? is-invalid : ''" />
                 <div class="invalid-feedback">
-                    <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    <span class="text-danger" th:if="${#fields.hasErrors('client.email')}" th:errors="*{client.email}"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row form-check">
+            <div class="col-12">
+                <label for="hasMailingAddress" class="form-label"><input type="checkbox" id="hasMailingAddress" class="form-check-input" th:field="*{hasMailingAddress}" /> Has Mailing Address</label>
+            </div>
+        </div>
+        <div id="mailing-address-form">
+            <div class="row form-group border-top pt-2">
+                <div class="col-12">
+                    <h4>Mailing Address</h4>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="line1" class="form-label">Line 1 <span class="text-danger">*</span></label>
+                    <input type="text" id="mailingAddress.line1" th:field="*{client.mailingAddress.line1}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('client.mailingAddress.line1')} ? is-invalid : ''" />
+                    <div class="invalid-feedback">
+                        <span class="text-danger" th:if="${#fields.hasErrors('client.mailingAddress.line1')}" th:errors="*{client.mailingAddress.line1}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="mailingAddress.line2" class="form-label">Line 2</label>
+                    <input type="text" id="mailingAddress.line2" th:field="*{client.mailingAddress.line2}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('client.mailingAddress.line2')} ? is-invalid : ''" />
+                    <div class="invalid-feedback">
+                        <span class="text-danger" th:if="${#fields.hasErrors('client.mailingAddress.line2')}" th:errors="*{client.mailingAddress.line2}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="mailingAddress.line3" class="form-label">Line 3</label>
+                    <input type="text" id="mailingAddress.line3" th:field="*{client.mailingAddress.line3}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('client.mailingAddress.line3')} ? is-invalid : ''" />
+                    <div class="invalid-feedback">
+                        <span class="text-danger" th:if="${#fields.hasErrors('client.mailingAddress.line3')}" th:errors="*{client.mailingAddress.line3}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="mailingAddress.city" class="form-label">City <span class="text-danger">*</span></label>
+                    <input type="text" id="mailingAddress.city" th:field="*{client.mailingAddress.city}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('client.mailingAddress.city')} ? is-invalid : ''" />
+                    <div class="invalid-feedback">
+                        <span class="text-danger" th:if="${#fields.hasErrors('client.mailingAddress.city')}" th:errors="*{client.mailingAddress.city}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="mailingAddress.state" class="form-label">State <span class="text-danger">*</span></label>
+                    <input type="text" id="mailingAddress.state" th:field="*{client.mailingAddress.state}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('client.mailingAddress.state')} ? is-invalid : ''" />
+                    <div class="invalid-feedback">
+                        <span class="text-danger" th:if="${#fields.hasErrors('client.mailingAddress.state')}" th:errors="*{client.mailingAddress.state}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-12">
+                    <label for="mailingAddress.zipCode" class="form-label">Zip Code <span class="text-danger">*</span></label>
+                    <input type="text" id="mailingAddress.zipCode" th:field="*{client.mailingAddress.zipCode}" class="form-control form-control-lg" th:classappend="${#fields.hasErrors('client.mailingAddress.zipCode')} ? is-invalid : ''" />
+                    <div class="invalid-feedback">
+                        <span class="text-danger" th:if="${#fields.hasErrors('client.mailingAddress.zipCode')}" th:errors="*{client.mailingAddress.zipCode}"></span>
+                    </div>
                 </div>
             </div>
         </div>

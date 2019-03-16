@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.meutley.studioadmintoolkit.mailingaddress.MailingAddressDto;
+
 public class ClientDto implements Serializable {
 
     private static final long serialVersionUID = -2510402120597053246L;
@@ -19,12 +21,18 @@ public class ClientDto implements Serializable {
     @Email(message = "Email must be a valid e-mail address")
     private String email;
 
+    private MailingAddressDto mailingAddress = new MailingAddressDto();
+
     public String getEmail() {
         return this.email;
     }
     
     public long getId() {
         return this.id;
+    }
+
+    public MailingAddressDto getMailingAddress() {
+        return this.mailingAddress;
     }
 
     public String getName() {
@@ -37,6 +45,10 @@ public class ClientDto implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setMailingAddress(MailingAddressDto mailingAddress) {
+        this.mailingAddress = mailingAddress;
     }
     
     public void setName(String value) {
