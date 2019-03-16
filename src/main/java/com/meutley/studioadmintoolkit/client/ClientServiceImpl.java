@@ -3,6 +3,8 @@ package com.meutley.studioadmintoolkit.client;
 import java.util.Arrays;
 import java.util.List;
 
+import com.meutley.studioadmintoolkit.mailingaddress.MailingAddress;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +24,12 @@ public class ClientServiceImpl implements ClientService {
     
     @Override
     public ClientDto create(ClientDto client) {
-        Client clientEntity = this.clientRepository.save(modelMapper.map(client, Client.class));
-        return modelMapper.map(clientEntity, ClientDto.class);
+        Client clientEntity = modelMapper.map(client, Client.class);
+        MailingAddress mailingAddress = client.getMailingAddress() != null
+            ? modelMapper.map(client.getMailingAddress(), MailingAddress.class)
+            : null;
+        clientEntity.setMailingAddress(mailingAddress);
+        return modelMapper.map(this.clientRepository.save(clientEntity), ClientDto.class);
     }
 
     @Override
@@ -31,6 +37,10 @@ public class ClientServiceImpl implements ClientService {
         Client existingClient = this.clientRepository.getOne(id);
         existingClient.setName(client.getName());
         existingClient.setEmail(client.getEmail());
+        MailingAddress mailingAddress = client.getMailingAddress() != null
+            ? modelMapper.map(client.getMailingAddress(), MailingAddress.class)
+            : null;
+        existingClient.setMailingAddress(mailingAddress);
         this.clientRepository.save(existingClient);
 
         return modelMapper.map(existingClient, ClientDto.class);
@@ -43,7 +53,10 @@ public class ClientServiceImpl implements ClientService {
     
     @Override
     public ClientDto getByEmail(String email) {
-        return modelMapper.map(this.clientRepository.findByEmail(email), ClientDto.class);
+        Client existingClient = this.clientRepository.findByEmail(email);
+        return existingClient != null
+            ? modelMapper.map(existingClient, ClientDto.class)
+            : null;
     }
     
     @Override
