@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div th:if="${clients.isEmpty()}">
-                            <p class="alert alert-warning"><i class="fa fa-warning"></i> There are currently no clients to show. <a href="#">Create a client now.</a></p>
+                            <p class="alert alert-warning"><i class="fa fa-warning"></i> There are currently no clients to show. <a href="/client/create">Create a client now.</a></p>
                         </div>
                         <div th:unless="${clients.isEmpty()}">
                             <div class="row pb-3">

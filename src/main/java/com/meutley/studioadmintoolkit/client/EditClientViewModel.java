@@ -2,13 +2,15 @@ package com.meutley.studioadmintoolkit.client;
 
 import javax.validation.Valid;
 
+import com.meutley.studioadmintoolkit.mailingaddress.MailingAddressDto;
+
 public class EditClientViewModel {
 
     @Valid
     private ClientDto client;
     
     private boolean hasMailingAddress = false;
-
+    
     public ClientDto getClient() {
         return this.client;
     }
@@ -29,6 +31,11 @@ public class EditClientViewModel {
 
     public void setHasMailingAddress(boolean hasMailingAddress) {
         this.hasMailingAddress = hasMailingAddress;
+    }
+
+    public boolean doesClientHaveMailingAddress() {
+        MailingAddressDto mailingAddress = this.getClient().getMailingAddress();
+        return mailingAddress != null && mailingAddress.getId() > 0; 
     }
     
 }
