@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
+    <head>
+            <title th:text="'Clients - Invoices (' + ${viewModel.clientName} + ')'"></title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>
+                            Invoices
+                            <small class="text-light" th:text="'(' + ${viewModel.clientName} + ')'"></small>
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div th:if="${viewModel.invoices.isEmpty()}">
+                            <p class="alert alert-warning">
+                                <i class="fa fa-warning"></i> There are currently no invoices for this client.
+                                <a th:href="@{/client/{clientId}/invoice/create(clientId=${viewModel.clientId})}">
+                                    Create an invoice now.
+                                </a>
+                            </p>
+                        </div>
+                        <div th:unless="${viewModel.invoices.isEmpty()}">
+                            <div class="row pb-3">
+                                <div class="col-12">
+                                    <a th:href="@{/client/{clientId}/invoice/create(clientId=${viewModel.clientId})}" class="btn btn-lg btn-success">
+                                        <i class="fa fa-plus"></i> New Invoice
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-condensed table-striped bg-light">
+                                        <thead>
+                                            <tr>
+                                                <th>Invoice #</th>
+                                                <th># of Line Items</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="invoice : ${viewModel.invoices}" th:data-id="${invoice.id}">
+                                                <td th:text="${invoice.invoiceNumber}"></td>
+                                                <td th:text="${invoice.lineItems.size()}"></td>
+                                                <td class="text-right">
+                                                    <a th:href="@{/client/{clientId}/invoice/{id}/view(clientId=${viewModel.clientId}, id=${invoice.id})}" class="btn btn-primary">
+                                                        <i class="fa fa-eye"></i> View
+                                                    </a>
+                                                    <a th:href="@{/client/{clientId}/invoice/{id}/edit(clientId=${viewModel.clientId}, id=${invoice.id})}" class="btn btn-dark">
+                                                        <i class="fa fa-edit"></i> Edit
+                                                    </a>
+                                                    <a th:href="@{/client/{clientId}/invoice/{id}/view(clientId=${viewModel.clientId}, id=${invoice.id})}" class="btn btn-danger delete-invoice-button">
+                                                        <i class="fa fa-times"></i> Delete
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

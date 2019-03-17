@@ -1,12 +1,15 @@
 package com.meutley.studioadmintoolkit.client;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -15,6 +18,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.meutley.studioadmintoolkit.core.model.SoftDeleteEntity;
+import com.meutley.studioadmintoolkit.invoice.Invoice;
 import com.meutley.studioadmintoolkit.mailingaddress.MailingAddress;
 
 import org.hibernate.annotations.Cascade;
@@ -47,12 +51,20 @@ public class Client extends SoftDeleteEntity implements Serializable {
     @Cascade(value = {CascadeType.ALL})
     private MailingAddress mailingAddress;
 
+    @OneToMany(mappedBy = "client")
+    @Cascade(value = {CascadeType.ALL})
+    private List<Invoice> invoices = new ArrayList<>();
+
     public String getEmail() {
         return this.email;
     }
     
     public long getId() {
         return this.id;
+    }
+
+    public List<Invoice> getInvoices() {
+        return this.invoices;
     }
 
     public MailingAddress getMailingAddress() {
@@ -70,6 +82,10 @@ public class Client extends SoftDeleteEntity implements Serializable {
     public void setEmail(String value) {
         this.email = value;
     }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
     
     public void setMailingAddress(MailingAddress mailingAddress) {
         this.mailingAddress = mailingAddress;
@@ -78,5 +94,15 @@ public class Client extends SoftDeleteEntity implements Serializable {
     public void setName(String value) {
         this.name = value;
     }
+
+    public void addInvoice(Invoice invoice) {
+        this.invoices.add(invoice);
+        invoice.setClient(this);
+    }
     
+    public void removeInvoice(Invoice invoice) {
+        this.invoices.remove(invoice);
+        invoice.setClient(null);
+    }
+
 }
