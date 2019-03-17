@@ -51,7 +51,7 @@ public class InvoiceDto implements Serializable {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public void setInvoiceLineItems(List<InvoiceLineItemDto> lineItems) {
+    public void setLineItems(List<InvoiceLineItemDto> lineItems) {
         this.lineItems = lineItems;
     }
     

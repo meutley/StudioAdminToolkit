@@ -41,9 +41,8 @@ public class ClientServiceImpl implements ClientService {
             ? modelMapper.map(client.getMailingAddress(), MailingAddress.class)
             : null;
         existingClient.setMailingAddress(mailingAddress);
-        this.clientRepository.save(existingClient);
 
-        return modelMapper.map(existingClient, ClientDto.class);
+        return modelMapper.map(this.clientRepository.save(existingClient), ClientDto.class);
     }
 
     @Override
