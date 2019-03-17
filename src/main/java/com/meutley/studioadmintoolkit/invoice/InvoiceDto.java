@@ -15,7 +15,7 @@ public class InvoiceDto implements Serializable {
 
     private int id;
 
-    @Size(max = 26)
+    @Size(max = 20)
     private String invoiceNumber;
     
     private ClientDto client;

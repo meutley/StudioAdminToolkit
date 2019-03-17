@@ -32,7 +32,7 @@ public class Invoice implements Serializable {
     private int id;
 
     @Column(name = "invoice_number")
-    @Size(max = 26)
+    @Size(max = 20)
     private String invoiceNumber;
     
     @ManyToOne
