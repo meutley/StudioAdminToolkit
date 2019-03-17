@@ -12,15 +12,18 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final ModelMapper modelMapper;
     private final InvoiceNumberGeneratorService invoiceNumberGeneratorService;
     private final InvoiceRepository invoiceRepository;
+    private final InvoiceLineItemRepository invoiceLineItemRepository;
 
     public InvoiceServiceImpl(
         ModelMapper modelMapper,
         InvoiceNumberGeneratorService invoiceNumberGeneratorService,
-        InvoiceRepository invoiceRepository
+        InvoiceRepository invoiceRepository,
+        InvoiceLineItemRepository invoiceLineItemRepository
     ) {
         this.modelMapper = modelMapper;
         this.invoiceNumberGeneratorService = invoiceNumberGeneratorService;
         this.invoiceRepository = invoiceRepository;
+        this.invoiceLineItemRepository = invoiceLineItemRepository;
     }
     
     @Override
@@ -29,6 +32,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice entity = modelMapper.map(invoice, Invoice.class);
         entity.getLineItems().forEach(lineItem -> lineItem.setInvoice(entity));
         return modelMapper.map(this.invoiceRepository.save(entity), InvoiceDto.class);
+    }
+
+    @Override
+    public void deleteLineItem(int invoiceId, int lineItemId) {
+        this.invoiceLineItemRepository.deleteById(lineItemId);
     }
     
     @Override
