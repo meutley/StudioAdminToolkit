@@ -12,7 +12,10 @@
                             <input type="hidden" name="invoice.id" th:value="${viewModel.invoice.id}" />
                             <div class="row">
                                 <div class="col-12">
-                                    <h2>Create New Invoice</h2>
+                                    <h2>
+                                        Edit Invoice
+                                        <small class="text-muted text-small" th:text="${viewModel.invoice.invoiceNumber}"></small>
+                                    </h2>
                                 </div>
                             </div>
                             <div th:replace="~{client/invoice/_mailing-address}"></div>
