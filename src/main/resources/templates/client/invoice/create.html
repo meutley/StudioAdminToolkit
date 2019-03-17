@@ -8,16 +8,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-10 mx-auto">
-                        <form action="#" th:action="@{/client/{clientId}/invoice/create(clientId=${viewModel.client.id})}" th:object="${viewModel}" method="POST" class="form bg-white text-dark rounded p-4">
+                        <form action="#" th:action="@{/client/{clientId}/invoice/create(clientId=${viewModel.client.id})}" th:object="${viewModel}" method="POST" class="form bg-white text-dark rounded p-4 mb-4">
                             <input type="hidden" name="invoice.id" th:value="${viewModel.invoice.id}" />
                             <div class="row">
                                 <div class="col-12">
-                                    <h2>
-                                        Create New Invoice
-                                        <small class="text-muted" th:text="${viewModel.client.name}"></small>
-                                    </h2>
+                                    <h2>Create New Invoice</h2>
                                 </div>
                             </div>
+                            <div th:replace="~{client/invoice/_mailing-address}"></div>
+                            <hr/>
                             <div th:replace="~{client/invoice/_edit-form}"></div>
                             <div class="row">
                                 <div class="col-12 text-right">

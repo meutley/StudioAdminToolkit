@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-10 mx-auto">
-                        <form th:action="'/client/' + ${viewModel.client.id} + '/edit'" th:object="${viewModel}" method="POST" class="form bg-white text-dark rounded p-4">
+                        <form th:action="'/client/' + ${viewModel.client.id} + '/edit'" th:object="${viewModel}" method="POST" class="form bg-white text-dark rounded p-4 mb-4">
                             <input id="client.id" name="client.id" type="hidden" th:value="${viewModel.client.id}" />
                             <input id="client.mailingAddress.id" name="client.mailingAddress.id" type="hidden" th:value="${viewModel.getMailingAddressId()}" />
                             <div class="row">

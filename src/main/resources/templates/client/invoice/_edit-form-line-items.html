@@ -2,9 +2,28 @@
 <html>
     <head>
         <script type="text/javascript" th:inline="javascript">
+            function updateRunningTotal() {
+                var $lineItems = $('table#line-items');
+                var $lineItemRows = $lineItems.find('tr.line-item-row');
+                var $runningTotal = $('span#running-total');
+                $runningTotal.text('$0.00');
+                var runningTotal = 0.00;
+
+                $.each($lineItemRows, function () {
+                    var $billable = $(this).find('input.line-item-billable');
+                    if ($billable.is(':checked')) {
+                        var $quantity = $(this).find('input.line-item-quantity');
+                        var $unitPrice = $(this).find('input.line-item-unit-price');
+                        runningTotal += $quantity.val() * $unitPrice.val();
+                        $runningTotal.text(`$${runningTotal.toFixed(2)}`);
+                    }
+                });
+            }
+        
             $('document').ready(() => {
                 var $btnNewLineItem = $('button#btn-new-line-item');
                 var $lineItems = $('table#line-items');
+                var $runningTotal = $('span#running-total');
 
                 var $btnDropdown = $('<div class="dropdown">');
                 var $dropdownMenu = $('<div class="dropdown-menu">')
@@ -14,24 +33,57 @@
                 $btnDropdown.append($btnLineItemMenu);
                 $btnDropdown.append($dropdownMenu);
 
+                $lineItems.on(
+                    'change',
+                    'input.line-item-quantity, input.line-item-billable, input.line-item-unit-price',
+                    updateRunningTotal);
+
                 $btnNewLineItem.on('click', function () {
                     var newIndex = $('.line-item-row').length;
-                    alert(newIndex);
                     var nameBase = `invoice.lineItems[${newIndex}]`;
                     
                     var $newLineItem = $('<tr class="line-item-row">');
                     $newLineItem.append($('<td>').append($btnDropdown.clone()));
-                    $newLineItem.append($('<td>').append($(`<input type="text" class="form-control form-control-sm" name="${nameBase}.quantity" value="1" />`)));
-                    $newLineItem.append($('<td>').append($(`<input type="text" class="form-control form-control-sm" name="${nameBase}.name" />`)));
-                    $newLineItem.append($('<td>').append($(`<input type="text" class="form-control form-control-sm" name="${nameBase}.description" />`)));
-                    $newLineItem.append($('<td class="form-check text-center">').append($(`<input type="checkbox" checked="true" name="${nameBase}.isBillable" />`)));
-                    $newLineItem.append($('<td>').append($(`<input type="text" class="form-control form-control-sm" value="0.00" name="${nameBase}.unitPrice" />`)));
+                    $newLineItem.append($('<td>').append($(`<input type="text" class="form-control form-control-sm line-item-quantity" name="${nameBase}.quantity" value="1" />`)));
+                    $newLineItem.append($('<td>').append($(`<input type="text" class="form-control form-control-sm line-item-name" name="${nameBase}.name" />`)));
+                    $newLineItem.append($('<td>').append($(`<input type="text" class="form-control form-control-sm line-item-description" name="${nameBase}.description" />`)));
+                    $newLineItem.append($('<td class="form-check text-center">').append($(`<input type="checkbox" class="line-item-billable" checked="true" name="${nameBase}.isBillable" />`)));
+                    $newLineItem.append($('<td>').append($(`<input type="text" class="form-control form-control-sm line-item-unit-price" value="0.00" name="${nameBase}.unitPrice" />`)));
                     $lineItems.find('tbody').append($newLineItem);
                 });
 
                 $lineItems.on('click', 'a.btn-line-item-from-product', function (e) {
                     e.preventDefault();
+
                     var $lineItemRow = $(this).closest('tr.line-item-row');
+                    var clientId = /*[[${clientId}]]*/;
+                    var $modal = $('<div class="modal" role="dialog">');
+                    $modal.load(`/client/${clientId}/invoice/select-product-modal div.modal-dialog`,
+                        function (responseText, textStatus) {
+                            if (textStatus === 'error') {
+                                alert('An unknown error occurred. Please try again later. If the problem persists, contact support.');
+                                return;
+                            }
+                            
+                            var $target = $(this);
+                            $target.modal();
+                            $target.on('hidden.bs.modal', () => $target.remove());
+                            $target.on('click', 'button.ok-button', () => {
+                                var $selectedProduct = $target.find('select#product-list option:selected');
+                                var name = $selectedProduct.data('name');
+                                var description = $selectedProduct.data('description');
+                                var billable = $selectedProduct.data('billable');
+                                var unitPrice = $selectedProduct.data('unit-price');
+
+                                $lineItemRow.find('input.line-item-name').val(name);
+                                $lineItemRow.find('input.line-item-description').val(description);
+                                $lineItemRow.find('input.line-item-billable').attr('checked', billable == true);
+                                $lineItemRow.find('input.line-item-unit-price').val(unitPrice);
+                                
+                                $target.modal('hide');
+                                updateRunningTotal();
+                            });
+                        });
                 });
 
                 $lineItems.on('click', 'a.btn-line-item-delete', function (e) {
@@ -58,7 +110,9 @@
                             alert('An unknown error occurred. Please try again later. If the problem persists, contact support.');
                         });
                     }
-                })
+                });
+
+                updateRunningTotal();
             });
         </script>
     </head>
@@ -90,15 +144,15 @@
                                 <td>
                                     <input
                                         type="text"
-                                        class="form-control form-control-sm"
+                                        class="form-control form-control-sm line-item-quantity"
                                         th:name="|viewModel.invoice.lineItems[__${itemStat.index}__].quantity|"
                                         th:field="*{invoice.lineItems[__${itemStat.index}__].quantity}"
                                         th:classappend="${#fields.hasErrors('invoice.lineItems[__${itemStat.index}__].quantity')} ? is-invalid : ''" />
                                 </td>
                                 <td>
-                                        <input
+                                    <input
                                         type="text"
-                                        class="form-control form-control-sm"
+                                        class="form-control form-control-sm line-item-name"
                                         th:name="|viewModel.invoice.lineItems[__${itemStat.index}__].name|"
                                         th:field="*{invoice.lineItems[__${itemStat.index}__].name}"
                                         th:classappend="${#fields.hasErrors('invoice.lineItems[__${itemStat.index}__].name')} ? is-invalid : ''" />
@@ -106,7 +160,7 @@
                                 <td>
                                     <input
                                         type="text"
-                                        class="form-control form-control-sm"
+                                        class="form-control form-control-sm line-item-description"
                                         th:name="|viewModel.invoice.lineItems[__${itemStat.index}__].description|"
                                         th:field="*{invoice.lineItems[__${itemStat.index}__].description}"
                                         th:classappend="${#fields.hasErrors('invoice.lineItems[__${itemStat.index}__].description')} ? is-invalid : ''" />
@@ -114,13 +168,14 @@
                                 <td class="text-center">
                                     <input
                                         type="checkbox"
+                                        class="line-item-billable"
                                         th:name="|viewModel.invoice.lineItems[__${itemStat.index}__].isBillable|"
                                         th:field="*{invoice.lineItems[__${itemStat.index}__].isBillable}" />
                                 </td>
                                 <td>
                                     <input
                                         type="text"
-                                        class="form-control form-control-sm"
+                                        class="form-control form-control-sm line-item-unit-price"
                                         th:name="|viewModel.invoice.lineItems[__${itemStat.index}__].unitPrice|"
                                         th:field="*{invoice.lineItems[__${itemStat.index}__].unitPrice}"
                                         th:classappend="${#fields.hasErrors('invoice.lineItems[__${itemStat.index}__].unitPrice')} ? is-invalid : ''" />
@@ -131,10 +186,14 @@
                 </div>
             </div>
             <div class="row form-group">
-                <div class="col-12">
+                <div class="col-6">
                     <button type="button" class="btn btn-dark" id="btn-new-line-item">
                         <i class="fa fa-plus"></i> New Row
                     </button>
+                </div>
+                <div class="col-6 text-right text-dark">
+                    <strong>Total:</strong>
+                    <span id="running-total">$0.00</span>
                 </div>
             </div>
         </div>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head></head>
+    <body>
+        <div class="modal-dialog text-dark" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row form-group">
+                    <div class="col-12">
+                        <label for="product">Product</label>
+                        <select id="product-list" class="form-control form-control-lg">
+                            <option
+                                th:each="product : *{products}"
+                                value="${product.id}"
+                                th:text="${product.name}"
+                                th:data-name="${product.name}"
+                                th:data-description="${product.description}"
+                                th:data-billable="${product.isBillable}"
+                                th:data-unit-price="${product.unitPrice}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary ok-button"><i class="fa fa-check"></i> OK</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+            </div>
+            </div>
+        </div>
+    </body>
+</html>
