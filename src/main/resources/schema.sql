@@ -27,6 +27,7 @@ CREATE TABLE invoice (
 	id				SERIAL		PRIMARY KEY,
     client_id 		INT			NOT NULL,
     invoice_number	VARCHAR(20) NOT NULL,
+    is_active       BOOLEAN     NOT NULL DEFAULT TRUE,
     CONSTRAINT fk_invoice_client_id FOREIGN KEY (client_id)
         REFERENCES client (id)
 );
