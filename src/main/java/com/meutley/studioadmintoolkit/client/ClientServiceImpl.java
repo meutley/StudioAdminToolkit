@@ -2,7 +2,9 @@ package com.meutley.studioadmintoolkit.client;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
+import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 import com.meutley.studioadmintoolkit.mailingaddress.MailingAddress;
 
 import org.modelmapper.ModelMapper;
@@ -34,15 +36,19 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto edit(int id, ClientDto client) {
-        Client existingClient = this.clientRepository.getOne(id);
-        existingClient.setName(client.getName());
-        existingClient.setEmail(client.getEmail());
+        Optional<Client> existingClient = this.clientRepository.findById(id);
+        if (existingClient.isEmpty()) {
+            throw new EntityNotFoundException(id);
+        }
+        
+        existingClient.get().setName(client.getName());
+        existingClient.get().setEmail(client.getEmail());
         MailingAddress mailingAddress = client.getMailingAddress() != null
             ? modelMapper.map(client.getMailingAddress(), MailingAddress.class)
             : null;
-        existingClient.setMailingAddress(mailingAddress);
+        existingClient.get().setMailingAddress(mailingAddress);
 
-        return modelMapper.map(this.clientRepository.save(existingClient), ClientDto.class);
+        return modelMapper.map(this.clientRepository.save(existingClient.get()), ClientDto.class);
     }
 
     @Override
@@ -60,7 +66,11 @@ public class ClientServiceImpl implements ClientService {
     
     @Override
     public ClientDto getById(int id) {
-        return modelMapper.map(this.clientRepository.getOne(id), ClientDto.class);
+        Optional<Client> client = this.clientRepository.findById(id);
+        if (client.isEmpty()) {
+            throw new EntityNotFoundException(id);
+        }
+        return modelMapper.map(client.get(), ClientDto.class);
     }
 
 }

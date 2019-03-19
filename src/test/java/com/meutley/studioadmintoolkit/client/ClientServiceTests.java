@@ -1,6 +1,7 @@
 package com.meutley.studioadmintoolkit.client;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -10,6 +11,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
+
+import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,6 +29,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class ClientServiceTests {
 
+    private static final int CLIENT_ID = 1;
+    
     @Mock
     private ModelMapper modelMapper;
     @Mock
@@ -68,28 +74,35 @@ public class ClientServiceTests {
     }
 
     @Test
-    public void editShouldCallRepositoryGetOne() {
-        when(clientRepository.getOne(anyInt())).thenReturn(new Client());
+    public void editShouldCallRepositoryFindById() {
+        when(clientRepository.findById(anyInt())).thenReturn(Optional.of(new Client()));
 
         target.edit(1, new ClientDto());
 
-        verify(clientRepository, times(1)).getOne(anyInt());
+        verify(clientRepository, times(1)).findById(anyInt());
     }
 
     @Test
     public void editShouldCallRepositorySaveWithUpdatedEntity() {
-        when(clientRepository.getOne(anyInt())).thenReturn(new Client());
+        when(clientRepository.findById(anyInt())).thenReturn(Optional.of(new Client()));
 
         ClientDto input = new ClientDto();
         input.setName("Test Client");
         input.setEmail("testclient@satk");
 
-        target.edit(0, input);
+        target.edit(CLIENT_ID, input);
 
         verify(clientRepository, times(1)).save(
             argThat((Client c) ->
                 c.getName().equals("Test Client")
                 && c.getEmail().equals("testclient@satk")));
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void editWhenIdNotFoundShouldThrowEntityNotFoundException() {
+        when(clientRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        target.edit(CLIENT_ID, new ClientDto());
     }
 
     @Test
@@ -107,10 +120,39 @@ public class ClientServiceTests {
     }
 
     @Test
-    public void getByIdShouldCallRepository() {
-        target.getById(1);
+    public void getByEmailWhenFoundShouldMapEntityToDto() {
+        when(clientRepository.findByEmail(any(String.class))).thenReturn(new Client());
+        
+        ClientDto actual = target.getByEmail("testclient@satk");
 
-        verify(clientRepository, times(1)).getOne(1);
+        verify(modelMapper, times(1)).map(any(Client.class), eq(ClientDto.class));
+        assertNotNull(actual);
+    }
+
+    @Test
+    public void getByEmailWhenNotFoundShouldReturNull() {
+        when(clientRepository.findByEmail(any(String.class))).thenReturn(null);
+        
+        ClientDto actual = target.getByEmail("testclient@satk");
+
+        verify(modelMapper, times(0)).map(any(Client.class), eq(ClientDto.class));
+        assertNull(actual);
+    }
+
+    @Test
+    public void getByIdShouldCallRepository() {
+        when(clientRepository.findById(any(int.class))).thenReturn(Optional.of(new Client()));
+        
+        target.getById(CLIENT_ID);
+
+        verify(clientRepository, times(1)).findById(CLIENT_ID);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void getByIdWhenNotFoundShouldThrowEntityNotFoundException() {
+        when(clientRepository.findById(any(int.class))).thenReturn(Optional.empty());
+
+        target.getById(CLIENT_ID);
     }
     
 }

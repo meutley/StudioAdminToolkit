@@ -2,6 +2,9 @@ package com.meutley.studioadmintoolkit.invoice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
+import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public void deleteLineItem(int invoiceId, int lineItemId) {
+        InvoiceLineItem lineItem = this.invoiceLineItemRepository.getOneForInvoice(invoiceId, lineItemId);
+        if (lineItem == null) {
+            throw new EntityNotFoundException(lineItemId);
+        }
         this.invoiceLineItemRepository.deleteById(lineItemId);
     }
     
@@ -47,7 +54,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceDto getById(int id) {
-        return modelMapper.map(this.invoiceRepository.getOne(id), InvoiceDto.class);
+        Optional<Invoice> invoice = this.invoiceRepository.findById(id);
+        if (invoice.isEmpty()) {
+            throw new EntityNotFoundException(id);
+        }
+        return modelMapper.map(invoice.get(), InvoiceDto.class);
     }
 
 }

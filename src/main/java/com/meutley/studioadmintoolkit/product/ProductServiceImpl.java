@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto edit(ProductDto product) {
         Product entity = this.productRepository.getOne(product.getId());
+        if (entity == null) {
+            throw new EntityNotFoundException(product.getId());
+        }
+        
         entity.setName(product.getName());
         entity.setDescription(product.getDescription());
         entity.setIsBillable(product.getIsBillable());
@@ -54,7 +60,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getById(int id) {
-        return modelMapper.map(this.productRepository.getOne(id), ProductDto.class);
+        Product product = this.productRepository.getOne(id);
+        if (product == null) {
+            throw new EntityNotFoundException(id);
+        }
+        return modelMapper.map(product, ProductDto.class);
     }
 
 }
