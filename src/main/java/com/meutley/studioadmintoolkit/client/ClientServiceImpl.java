@@ -3,6 +3,7 @@ package com.meutley.studioadmintoolkit.client;
 import java.util.Arrays;
 import java.util.List;
 
+import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 import com.meutley.studioadmintoolkit.mailingaddress.MailingAddress;
 
 import org.modelmapper.ModelMapper;
@@ -35,6 +36,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto edit(int id, ClientDto client) {
         Client existingClient = this.clientRepository.getOne(id);
+        if (existingClient == null) {
+            throw new EntityNotFoundException(id);
+        }
+        
         existingClient.setName(client.getName());
         existingClient.setEmail(client.getEmail());
         MailingAddress mailingAddress = client.getMailingAddress() != null
@@ -60,7 +65,11 @@ public class ClientServiceImpl implements ClientService {
     
     @Override
     public ClientDto getById(int id) {
-        return modelMapper.map(this.clientRepository.getOne(id), ClientDto.class);
+        Client client = this.clientRepository.getOne(id);
+        if (client == null) {
+            throw new EntityNotFoundException(id);
+        }
+        return modelMapper.map(client, ClientDto.class);
     }
 
 }
