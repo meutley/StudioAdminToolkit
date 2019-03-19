@@ -1,4 +1,4 @@
-CREATE TABLE client (
+CREATE TABLE IF NOT EXISTS client (
     id 					SERIAL 			PRIMARY KEY,
 	name 				VARCHAR(100) 	NOT NULL,
 	email 				VARCHAR(255),
@@ -8,11 +8,11 @@ CREATE TABLE client (
         REFERENCES public.mailing_address (id)
 );
 
-CREATE UNIQUE INDEX ix_uq_client_email
+CREATE UNIQUE INDEX IF NOT EXISTS ix_uq_client_email
     ON client(email);
 	
 
-CREATE TABLE mailing_address (
+CREATE TABLE IF NOT EXISTS mailing_address (
     id 			SERIAL 			PRIMARY KEY,
     line_1 		VARCHAR(255)	NOT NULL,
     line_2 		VARCHAR(100),
@@ -23,7 +23,7 @@ CREATE TABLE mailing_address (
 );
 	
 
-CREATE TABLE invoice (
+CREATE TABLE IF NOT EXISTS invoice (
 	id				SERIAL		PRIMARY KEY,
     client_id 		INT			NOT NULL,
     invoice_number	VARCHAR(20) NOT NULL,
@@ -32,11 +32,11 @@ CREATE TABLE invoice (
         REFERENCES client (id)
 );
 
-CREATE UNIQUE INDEX ix_uq_invoice_invoice_number
+CREATE UNIQUE INDEX IF NOT EXISTS ix_uq_invoice_invoice_number
     ON invoice(invoice_number);
 	
 
-CREATE FUNCTION public.finalize_invoice_number()
+CREATE FUNCTION IF NOT EXISTS public.finalize_invoice_number()
     RETURNS trigger
     LANGUAGE 'plpgsql' 
 AS $BODY$
@@ -46,14 +46,14 @@ BEGIN
 END;
 $BODY$;
 
-CREATE TRIGGER finalize_invoice_number_on_insert
+CREATE TRIGGER IF NOT EXISTS finalize_invoice_number_on_insert
     BEFORE INSERT
     ON invoice
     FOR EACH ROW
     EXECUTE PROCEDURE public.finalize_invoice_number();
 														 
 
-CREATE TABLE invoice_line_item (
+CREATE TABLE IF NOT EXISTS invoice_line_item (
     id 			SERIAL 			PRIMARY KEY,
     invoice_id 	INT				NOT NULL,
     name 		VARCHAR(50)		NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE invoice_line_item (
 );
 														 
 
-CREATE TABLE product (
+CREATE TABLE IF NOT EXISTS product (
     id 			SERIAL 			PRIMARY KEY,
     name 		VARCHAR(50)		NOT NULL,
     description VARCHAR(150)	NOT NULL,
