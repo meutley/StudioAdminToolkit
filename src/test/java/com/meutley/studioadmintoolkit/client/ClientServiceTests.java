@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 
@@ -73,17 +74,17 @@ public class ClientServiceTests {
     }
 
     @Test
-    public void editShouldCallRepositoryGetOne() {
-        when(clientRepository.getOne(anyInt())).thenReturn(new Client());
+    public void editShouldCallRepositoryFindById() {
+        when(clientRepository.findById(anyInt())).thenReturn(Optional.of(new Client()));
 
         target.edit(1, new ClientDto());
 
-        verify(clientRepository, times(1)).getOne(anyInt());
+        verify(clientRepository, times(1)).findById(anyInt());
     }
 
     @Test
     public void editShouldCallRepositorySaveWithUpdatedEntity() {
-        when(clientRepository.getOne(anyInt())).thenReturn(new Client());
+        when(clientRepository.findById(anyInt())).thenReturn(Optional.of(new Client()));
 
         ClientDto input = new ClientDto();
         input.setName("Test Client");
@@ -99,7 +100,7 @@ public class ClientServiceTests {
 
     @Test(expected = EntityNotFoundException.class)
     public void editWhenIdNotFoundShouldThrowEntityNotFoundException() {
-        when(clientRepository.getOne(anyInt())).thenReturn(null);
+        when(clientRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         target.edit(CLIENT_ID, new ClientDto());
     }
@@ -140,16 +141,16 @@ public class ClientServiceTests {
 
     @Test
     public void getByIdShouldCallRepository() {
-        when(clientRepository.getOne(any(int.class))).thenReturn(new Client());
+        when(clientRepository.findById(any(int.class))).thenReturn(Optional.of(new Client()));
         
         target.getById(CLIENT_ID);
 
-        verify(clientRepository, times(1)).getOne(CLIENT_ID);
+        verify(clientRepository, times(1)).findById(CLIENT_ID);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void getByIdWhenNotFoundShouldThrowEntityNotFoundException() {
-        when(clientRepository.getOne(any(int.class))).thenReturn(null);
+        when(clientRepository.findById(any(int.class))).thenReturn(Optional.empty());
 
         target.getById(CLIENT_ID);
     }

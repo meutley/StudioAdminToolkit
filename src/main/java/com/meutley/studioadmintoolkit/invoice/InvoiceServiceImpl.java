@@ -2,6 +2,7 @@ package com.meutley.studioadmintoolkit.invoice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 
@@ -53,11 +54,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceDto getById(int id) {
-        Invoice invoice = this.invoiceRepository.getOne(id);
-        if (invoice == null) {
+        Optional<Invoice> invoice = this.invoiceRepository.findById(id);
+        if (invoice.isEmpty()) {
             throw new EntityNotFoundException(id);
         }
-        return modelMapper.map(invoice, InvoiceDto.class);
+        return modelMapper.map(invoice.get(), InvoiceDto.class);
     }
 
 }

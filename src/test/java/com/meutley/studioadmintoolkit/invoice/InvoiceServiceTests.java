@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 
@@ -57,7 +58,7 @@ public class InvoiceServiceTests {
         when(modelMapper.map(any(Invoice.class), any())).thenReturn(new InvoiceDto());
         when(modelMapper.map(any(List.class), eq(InvoiceDto[].class))).thenReturn(new InvoiceDto[]{});
         when(invoiceNumberGeneratorService.generateInvoiceNumber(any(InvoiceDto.class))).thenReturn(new String());
-        when(invoiceRepository.getOne(any(int.class))).thenReturn(new Invoice());
+        when(invoiceRepository.findById(any(int.class))).thenReturn(Optional.of(new Invoice()));
         when(invoiceRepository.save(any(Invoice.class))).thenReturn(new Invoice());
     }
 
@@ -140,22 +141,22 @@ public class InvoiceServiceTests {
     }
 
     @Test
-    public void getByIdShouldCallInvoiceRepositoryGetOne() {
+    public void getByIdShouldCallInvoiceRepositoryFindById() {
         target.getById(INVOICE_ID);
 
-        verify(invoiceRepository, times(1)).getOne(INVOICE_ID);
+        verify(invoiceRepository, times(1)).findById(INVOICE_ID);
     }
 
     @Test(expected = EntityNotFoundException.class)
     public void getByIdWhenIdNotFoundShouldThrowEntityNotFoundException() {
-        when(invoiceRepository.getOne(any(int.class))).thenReturn(null);
+        when(invoiceRepository.findById(any(int.class))).thenReturn(Optional.empty());
 
         target.getById(INVOICE_ID);
     }
 
     @Test
     public void getByIdShouldMapEntityToDto() {
-        when(invoiceRepository.getOne(any(int.class))).thenReturn(new Invoice());
+        when(invoiceRepository.findById(any(int.class))).thenReturn(Optional.of(new Invoice()));
 
         target.getById(INVOICE_ID);
 
