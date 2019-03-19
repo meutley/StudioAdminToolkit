@@ -3,6 +3,7 @@ package com.meutley.studioadmintoolkit.product;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 
@@ -35,20 +36,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto edit(ProductDto product) {
-        Product entity = this.productRepository.getOne(product.getId());
-        if (entity == null) {
+        Optional<Product> entity = this.productRepository.findById(product.getId());
+        if (entity.isEmpty()) {
             throw new EntityNotFoundException(product.getId());
         }
         
-        entity.setName(product.getName());
-        entity.setDescription(product.getDescription());
-        entity.setIsBillable(product.getIsBillable());
+        entity.get().setName(product.getName());
+        entity.get().setDescription(product.getDescription());
+        entity.get().setIsBillable(product.getIsBillable());
         BigDecimal unitPrice = product.getIsBillable()
             ? product.getUnitPrice()
             : BigDecimal.ZERO;
-        entity.setUnitPrice(unitPrice);
+        entity.get().setUnitPrice(unitPrice);
 
-        return modelMapper.map(this.productRepository.save(entity), ProductDto.class);
+        return modelMapper.map(this.productRepository.save(entity.get()), ProductDto.class);
     }
     
     @Override
@@ -60,11 +61,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getById(int id) {
-        Product product = this.productRepository.getOne(id);
-        if (product == null) {
+        Optional<Product> product = this.productRepository.findById(id);
+        if (product.isEmpty()) {
             throw new EntityNotFoundException(id);
         }
-        return modelMapper.map(product, ProductDto.class);
+        return modelMapper.map(product.get(), ProductDto.class);
     }
 
 }
