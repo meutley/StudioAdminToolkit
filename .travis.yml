@@ -6,5 +6,5 @@ services:
 
 before_install:
   - chmod +x mvnw
-  - psql -c 'CREATE DATABASE IF NOT EXISTS studioadmintoolkit;' -U postgres
+  - psql -c 'DROP DATABASE IF EXISTS studioadmintoolkit; CREATE DATABASE studioadmintoolkit;' -U postgres
   - psql -U postgres -d studioadmintoolkit -a -f src/main/resources/schema.sql
