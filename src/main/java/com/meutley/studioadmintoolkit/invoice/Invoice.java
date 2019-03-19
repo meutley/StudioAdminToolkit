@@ -7,9 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,18 +15,14 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.meutley.studioadmintoolkit.client.Client;
+import com.meutley.studioadmintoolkit.core.model.SoftDeleteEntity;
 
 @Entity
 @Table(name = "invoice")
 @JsonIgnoreProperties({"hibernateLazyInitialization"})
-public class Invoice implements Serializable {
+public class Invoice extends SoftDeleteEntity implements Serializable {
     
     private static final long serialVersionUID = -3456978100259854930L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
 
     @Column(name = "invoice_number")
     @Size(max = 20)
@@ -41,10 +34,6 @@ public class Invoice implements Serializable {
 
     @OneToMany(mappedBy = "invoice", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<InvoiceLineItem> lineItems = new ArrayList<>();
-
-    public int getId() {
-        return this.id;
-    }
     
     public Client getClient() {
         return this.client;
@@ -56,10 +45,6 @@ public class Invoice implements Serializable {
 
     public List<InvoiceLineItem> getLineItems() {
         return this.lineItems;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setClient(Client client) {

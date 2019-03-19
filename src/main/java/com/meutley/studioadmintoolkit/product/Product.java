@@ -5,9 +5,6 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -23,11 +20,6 @@ import com.meutley.studioadmintoolkit.core.model.SoftDeleteEntity;
 public class Product extends SoftDeleteEntity implements Serializable {
 
     private static final long serialVersionUID = -7315566214925782371L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
 
     @Column(name = "name")
     @NotBlank(message = "Name cannot be blank")
@@ -48,10 +40,6 @@ public class Product extends SoftDeleteEntity implements Serializable {
     @Min(value = 0, message = "Unit Price must be greater than or equal to zero")
     private BigDecimal unitPrice;
 
-    public int getId() {
-        return this.id;
-    }
-
     public String getName() {
         return this.name;
     }
@@ -66,10 +54,6 @@ public class Product extends SoftDeleteEntity implements Serializable {
 
     public BigDecimal getUnitPrice() {
         return this.unitPrice;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setName(String name) {

@@ -2,7 +2,7 @@ package com.meutley.studioadmintoolkit.core.model;
 
 import javax.persistence.Column;
 
-public class SoftDeleteEntity {
+public abstract class SoftDeleteEntity extends BaseEntity {
 
     @Column(name = "is_active")
     private boolean isActive;

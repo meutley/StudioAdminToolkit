@@ -4,27 +4,20 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.meutley.studioadmintoolkit.core.model.BaseEntity;
 
 @Entity
 @Table(name = "mailing_address")
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
-public class MailingAddress implements Serializable {
+public class MailingAddress extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -5291825889119394600L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
 
     @Column(name = "line_1")
     @NotBlank(message = "Line 1 cannot be blank")
@@ -53,10 +46,6 @@ public class MailingAddress implements Serializable {
     @NotNull(message = "Zip Code is required")
     private int zipCode;
 
-    public int getId() {
-        return this.id;
-    }
-
     public String getLine1() {
         return this.line1;
     }
@@ -79,10 +68,6 @@ public class MailingAddress implements Serializable {
 
     public int getZipCode() {
         return this.zipCode;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setLine1(String line1) {
