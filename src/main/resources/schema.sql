@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS client (
+DROP TABLE IF EXISTS client;
+CREATE TABLE client (
     id 					SERIAL 			PRIMARY KEY,
 	name 				VARCHAR(100) 	NOT NULL,
 	email 				VARCHAR(255),
@@ -8,11 +9,13 @@ CREATE TABLE IF NOT EXISTS client (
         REFERENCES public.mailing_address (id)
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS ix_uq_client_email
+DROP INDEX IF EXISTS ix_uq_client_email;
+CREATE UNIQUE INDEX ix_uq_client_email
     ON client(email);
 	
 
-CREATE TABLE IF NOT EXISTS mailing_address (
+DROP TABLE IF EXISTS mailing_address;
+CREATE TABLE mailing_address (
     id 			SERIAL 			PRIMARY KEY,
     line_1 		VARCHAR(255)	NOT NULL,
     line_2 		VARCHAR(100),
@@ -23,7 +26,8 @@ CREATE TABLE IF NOT EXISTS mailing_address (
 );
 	
 
-CREATE TABLE IF NOT EXISTS invoice (
+DROP TABLE IF EXISTS invoice;
+CREATE TABLE invoice (
 	id				SERIAL		PRIMARY KEY,
     client_id 		INT			NOT NULL,
     invoice_number	VARCHAR(20) NOT NULL,
@@ -32,11 +36,13 @@ CREATE TABLE IF NOT EXISTS invoice (
         REFERENCES client (id)
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS ix_uq_invoice_invoice_number
+DROP INDEX IF EXISTS ix_uq_invoice_invoice_number;
+CREATE UNIQUE INDEX ix_uq_invoice_invoice_number
     ON invoice(invoice_number);
 	
 
-CREATE FUNCTION IF NOT EXISTS public.finalize_invoice_number()
+DROP FUNCTION IF EXISTS finalize_invoice_number;
+CREATE FUNCTION finalize_invoice_number()
     RETURNS trigger
     LANGUAGE 'plpgsql' 
 AS $BODY$
@@ -46,14 +52,16 @@ BEGIN
 END;
 $BODY$;
 
-CREATE TRIGGER IF NOT EXISTS finalize_invoice_number_on_insert
+DROP TRIGGER IF EXISTS finalize_invoice_number_on_insert;
+CREATE TRIGGER finalize_invoice_number_on_insert
     BEFORE INSERT
     ON invoice
     FOR EACH ROW
     EXECUTE PROCEDURE public.finalize_invoice_number();
 														 
 
-CREATE TABLE IF NOT EXISTS invoice_line_item (
+DROP TABLE IF EXISTS invoice_line_item;
+CREATE TABLE invoice_line_item (
     id 			SERIAL 			PRIMARY KEY,
     invoice_id 	INT				NOT NULL,
     name 		VARCHAR(50)		NOT NULL,
@@ -66,7 +74,8 @@ CREATE TABLE IF NOT EXISTS invoice_line_item (
 );
 														 
 
-CREATE TABLE IF NOT EXISTS product (
+DROP TABLE IF EXISTS product;
+CREATE TABLE product (
     id 			SERIAL 			PRIMARY KEY,
     name 		VARCHAR(50)		NOT NULL,
     description VARCHAR(150)	NOT NULL,
