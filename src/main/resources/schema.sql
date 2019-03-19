@@ -1,4 +1,5 @@
-DROP TABLE IF EXISTS client;
+CREATE DATABASE studioadmintoolkit;
+
 CREATE TABLE client (
     id 					SERIAL 			PRIMARY KEY,
 	name 				VARCHAR(100) 	NOT NULL,
@@ -9,12 +10,10 @@ CREATE TABLE client (
         REFERENCES public.mailing_address (id)
 );
 
-DROP INDEX IF EXISTS ix_uq_client_email;
 CREATE UNIQUE INDEX ix_uq_client_email
     ON client(email);
 	
 
-DROP TABLE IF EXISTS mailing_address;
 CREATE TABLE mailing_address (
     id 			SERIAL 			PRIMARY KEY,
     line_1 		VARCHAR(255)	NOT NULL,
@@ -26,7 +25,6 @@ CREATE TABLE mailing_address (
 );
 	
 
-DROP TABLE IF EXISTS invoice;
 CREATE TABLE invoice (
 	id				SERIAL		PRIMARY KEY,
     client_id 		INT			NOT NULL,
@@ -36,12 +34,10 @@ CREATE TABLE invoice (
         REFERENCES client (id)
 );
 
-DROP INDEX IF EXISTS ix_uq_invoice_invoice_number;
 CREATE UNIQUE INDEX ix_uq_invoice_invoice_number
     ON invoice(invoice_number);
 	
 
-DROP FUNCTION IF EXISTS finalize_invoice_number;
 CREATE FUNCTION finalize_invoice_number()
     RETURNS trigger
     LANGUAGE 'plpgsql' 
@@ -52,7 +48,6 @@ BEGIN
 END;
 $BODY$;
 
-DROP TRIGGER IF EXISTS finalize_invoice_number_on_insert;
 CREATE TRIGGER finalize_invoice_number_on_insert
     BEFORE INSERT
     ON invoice
@@ -60,7 +55,6 @@ CREATE TRIGGER finalize_invoice_number_on_insert
     EXECUTE PROCEDURE public.finalize_invoice_number();
 														 
 
-DROP TABLE IF EXISTS invoice_line_item;
 CREATE TABLE invoice_line_item (
     id 			SERIAL 			PRIMARY KEY,
     invoice_id 	INT				NOT NULL,
@@ -74,7 +68,6 @@ CREATE TABLE invoice_line_item (
 );
 														 
 
-DROP TABLE IF EXISTS product;
 CREATE TABLE product (
     id 			SERIAL 			PRIMARY KEY,
     name 		VARCHAR(50)		NOT NULL,
