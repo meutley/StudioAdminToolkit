@@ -38,6 +38,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public void deleteLineItem(int invoiceId, int lineItemId) {
+        InvoiceLineItem lineItem = this.invoiceLineItemRepository.getOneForInvoice(invoiceId, lineItemId);
+        if (lineItem == null) {
+            throw new EntityNotFoundException(lineItemId);
+        }
         this.invoiceLineItemRepository.deleteById(lineItemId);
     }
     
