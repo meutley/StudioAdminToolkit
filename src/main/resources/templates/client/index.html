@@ -37,13 +37,10 @@
                                                 <td th:text="${client.name}"></td>
                                                 <td th:text="${client.email}"></td>
                                                 <td class="text-right">
-                                                    <a th:href="@{/client/{id}/details(id=${client.id})}" class="btn btn-primary">
-                                                        <i class="fa fa-eye"></i> View
-                                                    </a>
-                                                    <a th:href="@{/client/{id}/edit(id=${client.id})}" class="btn btn-dark">
+                                                    <a th:href="@{/client/{id}/edit(id=${client.id})}" class="btn btn-sm btn-dark">
                                                         <i class="fa fa-edit"></i> Edit
                                                     </a>
-                                                    <a th:href="@{/client/{id}/delete(id=${client.id})}" class="btn btn-danger delete-client-button">
+                                                    <a th:href="@{/client/{id}/delete(id=${client.id})}" class="btn btn-sm btn-danger delete-client-button">
                                                         <i class="fa fa-times"></i> Delete
                                                     </a>
                                                 </td>

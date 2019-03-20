@@ -37,13 +37,6 @@ public class ClientController {
         return "client/index";
     }
 
-    @GetMapping("/{id}/details")
-    public String details(@PathVariable int id, Model model) {
-        ClientDto client = this.clientService.getById(id);
-        model.addAttribute("client", client);
-        return "client/details";
-    }
-
     @GetMapping("/create")
     public String create(Model model) {
         if (!model.containsAttribute("viewModel")) {
