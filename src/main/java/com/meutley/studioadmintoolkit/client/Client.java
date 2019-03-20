@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -29,6 +32,11 @@ public class Client extends SoftDeleteEntity implements Serializable {
 
     private static final long serialVersionUID = -1651846186451658L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
     @Column(name = "name")
     @NotBlank(message = "Name cannot be blank")
     @Size(min = 5, max = 100, message = "Name must be between 5 and 100 characters in length")
@@ -47,6 +55,10 @@ public class Client extends SoftDeleteEntity implements Serializable {
     @Cascade(value = {CascadeType.ALL})
     private List<Invoice> invoices = new ArrayList<>();
 
+    public int getId() {
+        return this.id;
+    }
+
     public String getEmail() {
         return this.email;
     }
@@ -61,6 +73,10 @@ public class Client extends SoftDeleteEntity implements Serializable {
 
     public String getName() {
         return this.name;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     public void setEmail(String value) {

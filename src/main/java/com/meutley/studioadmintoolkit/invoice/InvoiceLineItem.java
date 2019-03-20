@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,15 +17,20 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.meutley.studioadmintoolkit.core.model.BaseEntity;
 
 @Entity
 @Table(name = "invoice_line_item")
 @JsonIgnoreProperties({"hibernateLazyInitialization"})
-public class InvoiceLineItem extends BaseEntity implements Serializable {
+public class InvoiceLineItem implements Serializable {
 
     private static final long serialVersionUID = 860485932231837616L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "name")
     @NotBlank(message = "Name cannot be blank")
     @Size(max = 50, message = "Name must be no more than 50 characters in length")
     private String name;
@@ -47,6 +55,10 @@ public class InvoiceLineItem extends BaseEntity implements Serializable {
     @JoinColumn(name = "invoice_id")
     private Invoice invoice;
 
+    public int getId() {
+        return this.id;
+    }
+
     public Invoice getInvoice() {
         return this.invoice;
     }
@@ -69,6 +81,10 @@ public class InvoiceLineItem extends BaseEntity implements Serializable {
 
     public BigDecimal getQuantity() {
         return this.quantity;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setInvoice(Invoice invoice) {
