@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
+    <head>
+        <title>Payments</title>
+
+        <script type="text/javascript">
+            $(document).ready(() => {
+                var $clientInvoiceForm = $('form#client-invoice-form');
+                var $selectedClient = $clientInvoiceForm.find('select#selected-client');
+                var $selectedInvoice = $clientInvoiceForm.find('select#selected-invoice');
+
+                $selectedClient.on('change', function () {
+                    var selectedClientId = $(this).find('option:selected').val();
+                    if (selectedClientId !== '') {
+                        $clientInvoiceForm.attr('action', `/payment/client/${selectedClientId}`);
+                        $clientInvoiceForm.submit();
+                    }
+                });
+
+                $selectedInvoice.on('change', function () {
+                    var selectedClientId = $selectedClient.find('option:selected').val();
+                    var selectedInvoiceId = $(this).find('option:selected').val();
+                    var formActionSuffix = selectedInvoiceId !== ''
+                        ? `/invoice/${selectedInvoiceId}`
+                        : '';
+
+                    $clientInvoiceForm.attr('action', `/payment/client/${selectedClientId}${formActionSuffix}`);
+                    $clientInvoiceForm.submit();
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>
+                            <i class="fa fa-money"></i>
+                            Payments
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <form id="client-invoice-form" method="GET">
+                            <div class="row form-group">
+                                <div class="col-5">
+                                    <label for="selected-client">Client</label>
+                                    <select class="form-control" id="selected-client">
+                                        <option th:if="${viewModel.selectedClientId.isEmpty()}"></option>
+                                        <option
+                                            th:each="client : ${viewModel.clients}"
+                                            th:value="${client.id}"
+                                            th:text="${client.name}"
+                                            th:selected="${viewModel.isClientSelected(client.id)}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group" th:if="${viewModel.selectedClientId.isPresent()}">
+                                <div class="col-5">
+                                    <label for="selected-invoice">Invoice</label>
+                                    <select class="form-control" id="selected-invoice">
+                                        <option th:if="${#lists.isEmpty(viewModel.invoices)}" value="">(No invoices available)</option>
+                                        <option th:if="${not #lists.isEmpty(viewModel.invoices)}" value="">(All)</option>
+                                        <option
+                                            th:each="invoice : ${viewModel.invoices}"
+                                            th:value="${invoice.id}"
+                                            th:text="${invoice.invoiceNumber}"
+                                            th:selected="${viewModel.isInvoiceSelected(invoice.id)}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                        <div th:if="${viewModel.selectedClientId.isEmpty()}">
+                            <p class="alert alert-info">
+                                <i class="fa fa-info-circle"></i>
+                                Select a client to view payments.
+                            </p>
+                        </div>
+                        <div th:if="${viewModel.payments.isEmpty() && viewModel.selectedClientId.isPresent()}">
+                            <p class="alert alert-warning">
+                                <i class="fa fa-warning"></i>
+                                There are currently no payments recorded.
+                                <a href="/payment/create">Enter a new payment now.</a>
+                            </p>
+                        </div>
+                        <div th:unless="${viewModel.payments.isEmpty()}">
+                            <div class="row pb-3">
+                                <div class="col-12">
+                                    <a th:href="${viewModel.getCreatePaymentLink()}" class="btn btn-lg btn-success"><i class="fa fa-plus"></i> New Payment</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table table-sm table-condensed table-striped bg-light">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Client</th>
+                                                <th>Invoice #</th>
+                                                <!-- <th>Notes</th> -->
+                                                <th>Amount</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="payment : ${viewModel.payments}" th:data-id="${payment.id}">
+                                                <td th:text="${#dates.format(payment.dateCollected, 'MM/dd/yyyy')}"></td>
+                                                <td th:text="${payment.client.name}"></td>
+                                                <td>
+                                                    <a
+                                                        th:href="@{/client/{clientId}/invoice/{invoiceId}/view(clientId=${payment.client.id}, invoiceId=${payment.invoice.id})}"
+                                                        th:text="${viewModel.getInvoiceNumber(payment.invoice)}"></a>
+                                                </td>
+                                                <!-- <td th:text="${payment.notes}"></td> -->
+                                                <td th:text="${#numbers.formatCurrency(payment.amount)}"></td>
+                                                <td class="text-right text-nowrap">
+                                                    <a th:href="@{/payment/{id}/edit(id=${payment.id})}" class="btn btn-dark">
+                                                        <i class="fa fa-edit"></i> Edit
+                                                    </a>
+                                                    <a th:href="@{/payment/{id}/delete(id=${payment.id})}" class="btn btn-danger delete-payment-button">
+                                                        <i class="fa fa-times"></i> Delete
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

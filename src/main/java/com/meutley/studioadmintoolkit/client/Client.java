@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.meutley.studioadmintoolkit.core.model.SoftDeleteEntity;
 import com.meutley.studioadmintoolkit.invoice.Invoice;
 import com.meutley.studioadmintoolkit.mailingaddress.MailingAddress;
+import com.meutley.studioadmintoolkit.payment.Payment;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -50,10 +51,14 @@ public class Client extends SoftDeleteEntity implements Serializable {
     @OneToOne(orphanRemoval = true)
     @Cascade(value = {CascadeType.ALL})
     private MailingAddress mailingAddress;
-
+    
     @OneToMany(mappedBy = "client")
     @Cascade(value = {CascadeType.ALL})
     private List<Invoice> invoices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "client")
+    @Cascade(value = {CascadeType.ALL})
+    private List<Payment> payments = new ArrayList<>();
 
     public int getId() {
         return this.id;
@@ -65,6 +70,10 @@ public class Client extends SoftDeleteEntity implements Serializable {
 
     public List<Invoice> getInvoices() {
         return this.invoices;
+    }
+
+    public List<Payment> getPayments() {
+        return this.payments;
     }
 
     public MailingAddress getMailingAddress() {
@@ -86,6 +95,10 @@ public class Client extends SoftDeleteEntity implements Serializable {
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
     }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
     
     public void setMailingAddress(MailingAddress mailingAddress) {
         this.mailingAddress = mailingAddress;
@@ -103,6 +116,16 @@ public class Client extends SoftDeleteEntity implements Serializable {
     public void removeInvoice(Invoice invoice) {
         this.invoices.remove(invoice);
         invoice.setClient(null);
+    }
+
+    public void addPayment(Payment payment) {
+        this.payments.add(payment);
+        payment.setClient(this);
+    }
+
+    public void removePayment(Payment payment) {
+        this.payments.remove(payment);
+        payment.setClient(null);
     }
 
 }

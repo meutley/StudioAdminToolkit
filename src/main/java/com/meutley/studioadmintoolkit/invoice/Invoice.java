@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.meutley.studioadmintoolkit.client.Client;
 import com.meutley.studioadmintoolkit.core.model.SoftDeleteEntity;
+import com.meutley.studioadmintoolkit.payment.Payment;
 
 @Entity
 @Table(name = "invoice")
@@ -36,12 +37,15 @@ public class Invoice extends SoftDeleteEntity implements Serializable {
     @Size(max = 20)
     private String invoiceNumber;
     
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "client_id")
     private Client client;
 
     @OneToMany(mappedBy = "invoice", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<InvoiceLineItem> lineItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "invoice")
+    private List<Payment> payments = new ArrayList<>();
     
     public int getId() {
         return this.id;
@@ -83,6 +87,16 @@ public class Invoice extends SoftDeleteEntity implements Serializable {
     public void removeLineItem(InvoiceLineItem lineItem) {
         this.lineItems.remove(lineItem);
         lineItem.setInvoice(null);
+    }
+
+    public void addPayment(Payment payment) {
+        this.payments.add(payment);
+        payment.setInvoice(this);
+    }
+
+    public void removePayment(Payment payment) {
+        this.payments.remove(payment);
+        payment.setInvoice(null);
     }
     
 }
