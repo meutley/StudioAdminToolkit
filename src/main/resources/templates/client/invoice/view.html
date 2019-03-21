@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{shared/_layout}">
     <head>
-            <title th:text="'Clients (' + ${viewModel.client.name} + ') - View Invoice (' + ${viewModel.invoice.invoiceNumber} + ')'"></title>
+        <title th:text="'Invoice (' + ${viewModel.invoice.invoiceNumber} + ')'"></title>
+
+        <link rel="stylesheet" th:href="@{/css/client/invoice/view.css}">
     </head>
     <body>
         <div layout:fragment="content">
