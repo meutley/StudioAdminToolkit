@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 import com.meutley.studioadmintoolkit.invoice.InvoiceDto;
 import com.meutley.studioadmintoolkit.invoice.InvoiceService;
 import com.meutley.studioadmintoolkit.product.ProductDto;
@@ -142,6 +143,20 @@ public class ClientInvoiceController {
         products.sort(Comparator.comparing(ProductDto::getName));
         model.addAttribute("products", products);
         return "client/invoice/_select-product-modal";
+    }
+
+    @GetMapping("/{id}/view")
+    public String view(@PathVariable int clientId, @PathVariable int id, Model model) {
+        InvoiceDto invoice = this.invoiceService.getById(id);
+        if (invoice.getClient().getId() != clientId) {
+            throw new EntityNotFoundException(id);
+        }
+
+        ViewClientInvoiceViewModel viewModel = new ViewClientInvoiceViewModel();
+        viewModel.setClient(invoice.getClient());
+        viewModel.setInvoice(invoice);
+        model.addAttribute("viewModel", viewModel);
+        return "client/invoice/view";
     }
     
 

@@ -1,0 +1,14 @@
+@media print {
+    body,
+    html {
+        background: #fff;
+    }
+    
+    nav#app-header-nav {
+        display: none;
+    }
+
+    div#app-title-block {
+        display: none;
+    }
+}
