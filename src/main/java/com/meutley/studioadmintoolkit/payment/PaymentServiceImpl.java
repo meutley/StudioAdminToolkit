@@ -2,6 +2,9 @@ package com.meutley.studioadmintoolkit.payment;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
+import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,15 @@ public class PaymentServiceImpl implements PaymentService {
     public List<PaymentDto> getByClientInvoiceId(int clientId, int invoiceId) {
         List<Payment> payments = this.paymentRepository.getByClientInvoiceId(clientId, invoiceId);
         return Arrays.asList(modelMapper.map(payments, PaymentDto[].class));
+    }
+
+    @Override
+    public PaymentDto getById(int id) {
+        Optional<Payment> payment = this.paymentRepository.findById(id);
+        if (payment.isEmpty()) {
+            throw new EntityNotFoundException(id);
+        }
+        return modelMapper.map(payment.get(), PaymentDto.class);
     }
 
 }

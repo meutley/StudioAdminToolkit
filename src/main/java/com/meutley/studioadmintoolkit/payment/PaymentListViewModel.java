@@ -54,18 +54,6 @@ public class PaymentListViewModel {
     public void setInvoices(List<InvoiceDto> invoices) {
         this.invoices = invoices;
     }
-
-    public String getCreatePaymentLink() {
-        if (this.selectedClientId.isEmpty()) {
-            return "/payment/create";
-        }
-
-        String link = String.format("/payment/client/%d", this.selectedClientId.get());
-        if (this.selectedInvoiceId.isPresent()) {
-            link = String.format("%s/invoice/%d", link, this.selectedInvoiceId.get());
-        }
-        return String.format("%s/create", link);
-    }
     
     public String getInvoiceNumber(InvoiceDto invoice) {
         return invoice != null

@@ -12,6 +12,7 @@ import com.meutley.studioadmintoolkit.invoice.InvoiceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -56,6 +57,41 @@ public class PaymentController {
         }
         model.addAttribute("viewModel", viewModel);
         return "payment/index";
+    }
+
+    @GetMapping(value = {"/edit-payment-modal", "/{id}/edit-payment-modal"})
+    public String editPaymentModal(@PathVariable Optional<Integer> id,
+        @RequestParam Optional<Integer> clientId,
+        @RequestParam Optional<Integer> invoiceId,
+        Model model) {
+
+        EditPaymentModalViewModel viewModel = new EditPaymentModalViewModel();
+        viewModel.setClientId(clientId);
+        viewModel.setInvoiceId(invoiceId);
+        if (id.isPresent()) {
+            PaymentDto payment = this.paymentService.getById(id.get());
+            viewModel.setPayment(payment);
+            viewModel.setClientName(payment.getClient().getName());
+            if (payment.getInvoice() != null) {
+                viewModel.setInvoiceNumber(payment.getInvoice().getInvoiceNumber());
+            }
+            viewModel.setIsNew(false);
+        } else {
+            if (clientId.isPresent()) {
+                ClientDto client = this.clientService.getById(clientId.get());
+                viewModel.setClientName(client.getName());
+            }
+
+            if (invoiceId.isPresent()) {
+                InvoiceDto invoice = this.invoiceService.getById(invoiceId.get());
+                viewModel.setInvoiceNumber(invoice.getInvoiceNumber());
+            }
+            
+            viewModel.setIsNew(true);
+        }
+
+        model.addAttribute("viewModel", viewModel);
+        return "payment/_edit-payment-modal";
     }
 
 }
