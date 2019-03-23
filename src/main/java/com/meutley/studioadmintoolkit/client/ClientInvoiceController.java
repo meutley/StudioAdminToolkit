@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 import com.meutley.studioadmintoolkit.invoice.InvoiceDto;
 import com.meutley.studioadmintoolkit.invoice.InvoiceService;
+import com.meutley.studioadmintoolkit.invoice.payment.InvoicePaymentService;
 import com.meutley.studioadmintoolkit.product.ProductDto;
 import com.meutley.studioadmintoolkit.product.ProductService;
 
@@ -35,12 +36,18 @@ public class ClientInvoiceController {
 
     private final ClientService clientService;
     private final InvoiceService invoiceService;
+    private final InvoicePaymentService invoicePaymentService;
     private final ProductService productService;
 
-    public ClientInvoiceController(ClientService clientService, InvoiceService invoiceService,
-            ProductService productService) {
+    public ClientInvoiceController(
+        ClientService clientService,
+        InvoiceService invoiceService,
+        InvoicePaymentService invoicePaymentService,
+        ProductService productService
+    ) {
         this.clientService = clientService;
         this.invoiceService = invoiceService;
+        this.invoicePaymentService = invoicePaymentService;
         this.productService = productService;
     }
 
@@ -155,6 +162,7 @@ public class ClientInvoiceController {
         ViewClientInvoiceViewModel viewModel = new ViewClientInvoiceViewModel();
         viewModel.setClient(invoice.getClient());
         viewModel.setInvoice(invoice);
+        viewModel.buildPaymentHistory(this.invoicePaymentService.getMostRecentPayments(id));
         model.addAttribute("viewModel", viewModel);
         return "client/invoice/view";
     }

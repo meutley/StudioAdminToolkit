@@ -30,12 +30,18 @@
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr th:each="client : ${clients}" th:data-id="${client.id}">
                                                 <td th:text="${client.name}"></td>
                                                 <td th:text="${client.email}"></td>
+                                                <td>
+                                                    <a th:href="@{/client/{clientId}/invoice(clientId=${client.id})}">
+                                                        Invoices
+                                                    </a>
+                                                </td>
                                                 <td class="text-right">
                                                     <a th:href="@{/client/{id}/edit(id=${client.id})}" class="btn btn-sm btn-dark">
                                                         <i class="fa fa-edit"></i> Edit

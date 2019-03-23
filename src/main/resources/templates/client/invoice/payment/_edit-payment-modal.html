@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head></head>
+    <body>
+        <div class="modal-dialog text-dark" role="document">
+            <form class="form" id="edit-payment-form" method="POST">
+                <input type="hidden" th:value="${viewModel.invoiceId}" th:field="*{viewModel.payment.invoice.id}" />
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><span th:text="${viewModel.getHeaderActionName()} + ' Payment'"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label for="client">Client</label>
+                                <input
+                                    type="text"
+                                    id="client"
+                                    class="form-control form-control-sm"
+                                    th:value="${viewModel.clientName}"
+                                    disabled="disabled" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label for="invoice">Invoice</label>
+                                <input
+                                    type="text"
+                                    id="invoice"
+                                    class="form-control form-control-sm"
+                                    th:value="${viewModel.invoiceNumber}"
+                                    disabled="disabled" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label for="amount">Amount <span class="text-danger">*</span></label>
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="amount"
+                                        class="form-control form-control-sm"
+                                        th:value="${viewModel.payment.amount}"
+                                        th:field="*{viewModel.payment.amount}"
+                                        th:classappend="${#fields.hasErrors('viewModel.payment.amount')} ? is-invalid : ''" />
+                                    <div class="invalid-feedback">
+                                        <span class="text-danger" th:if="${#fields.hasErrors('viewModel.payment.amount')}" th:errors="*{viewModel.payment.amount}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label for="date-collected-input">Date Collected <span class="text-danger">*</span></label>
+                                <div class="input-group date date-time-picker dt-default" id="date-collected" data-target-input="nearest">
+                                    <input
+                                        type="text"
+                                        id="date-collected-input"
+                                        class="form-control form-control-sm datetimepicker-input"
+                                        data-target="#date-collected"
+                                        th:field="*{viewModel.payment.dateCollected}"
+                                        th:classappend="${#fields.hasErrors('viewModel.payment.dateCollected')} ? is-invalid : ''"/>
+                                    <div class="input-group-append" data-target="#date-collected" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        <span class="text-danger" th:if="${#fields.hasErrors('viewModel.payment.dateCollected')}" th:errors="*{viewModel.payment.dateCollected}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-12">
+                                <label for="notes">Notes</label>
+                                <textarea
+                                    type="text"
+                                    id="notes"
+                                    class="form-control form-control-sm"
+                                    rows="2"
+                                    th:value="${viewModel.payment.notes}"
+                                    th:classappend="${#fields.hasErrors('viewModel.payment.notes')} ? is-invalid : ''"></textarea>
+                                <div class="invalid-feedback">
+                                    <span class="text-danger" th:if="${#fields.hasErrors('viewModel.payment.notes')}" th:errors="*{viewModel.payment.notes}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary ok-button"><i class="fa fa-check"></i> Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

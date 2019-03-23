@@ -4,15 +4,29 @@
         <title th:text="'Invoice (' + ${viewModel.invoice.invoiceNumber} + ')'"></title>
 
         <link rel="stylesheet" th:href="@{/css/client/invoice/view.css}">
+
+        <script type="text/javascript" th:src="@{/js/client/invoice/view.js}"></script>
+        <script type="text/javascript">
+            $(document).ready(() => {
+                Client.Invoice.View.init();
+            });
+        </script>
     </head>
     <body>
         <div layout:fragment="content">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row" id="invoice-body-wrapper">
                     <div class="col-11 mx-auto bg-light text-dark rounded p-3" style="font-size: 0.75rem !important" th:object="${viewModel}">
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-8">
                                 <div th:replace="~{client/invoice/_mailing-address}"></div>
+                                <input type="hidden" th:value="${viewModel.invoice.id}" id="invoice-id" />
+                            </div>
+                            <div class="col-4 text-right" id="collect-payment-wrapper">
+                                <button type="button" class="btn btn-sm btn-success" id="collect-payment-button">
+                                    <i class="fa fa-money"></i>
+                                    Collect Payment
+                                </button>
                             </div>
                         </div>
                         <hr/>
@@ -63,6 +77,11 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="row" id="payment-history-wrapper">
+                    <div class="col-11 mx-auto bg-light text-dark rounded p-3">
+                        <div th:replace="~{client/invoice/_payment-history}"></div>
                     </div>
                 </div>
             </div>
