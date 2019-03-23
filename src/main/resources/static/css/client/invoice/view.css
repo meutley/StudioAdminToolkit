@@ -1,3 +1,13 @@
+div.row#payment-history-wrapper {
+    margin-bottom: 50px;
+}
+
+@media screen {
+    div.row#payment-history-wrapper {
+        margin-top: 50px;
+    }
+}
+
 @media print {
     body,
     html {
@@ -10,5 +20,13 @@
 
     div#app-title-block {
         display: none;
+    }
+
+    div#collect-payment-wrapper {
+        display: none;
+    }
+
+    div.row#invoice-body-wrapper {
+        page-break-after: always;
     }
 }

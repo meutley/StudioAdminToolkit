@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import com.meutley.studioadmintoolkit.client.ClientDto;
+import com.meutley.studioadmintoolkit.invoice.payment.InvoicePaymentDto;
 
 public class InvoiceDto implements Serializable {
     
@@ -22,6 +23,8 @@ public class InvoiceDto implements Serializable {
 
     @Valid
     private List<InvoiceLineItemDto> lineItems = new ArrayList<>();
+
+    private List<InvoicePaymentDto> payments = new ArrayList<>();
 
     public int getId() {
         return this.id;
@@ -39,6 +42,10 @@ public class InvoiceDto implements Serializable {
         return this.lineItems;
     }
 
+    public List<InvoicePaymentDto> getPayments() {
+        return this.payments;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -53,6 +60,10 @@ public class InvoiceDto implements Serializable {
 
     public void setLineItems(List<InvoiceLineItemDto> lineItems) {
         this.lineItems = lineItems;
+    }
+
+    public void setPayments(List<InvoicePaymentDto> payments) {
+        this.payments = payments;
     }
     
 }

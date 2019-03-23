@@ -18,6 +18,8 @@ The technology used to develop the application is straightforward and nothing ou
 6. PostgreSQL 11
 7. jQuery 3.3.1-2 (WebJars)
 8. Bootstrap 4.3.1 (WebJars)
+9. TempusDominus-Bootstrap-4 5.1.2 (date / time picker) (WebJars)
+10. MomentJS 2.22.2 (WebJars)
 
 ## Getting Started
 

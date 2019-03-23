@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-12">
+        <h4>
+            <i class="fa fa-money"></i>
+            Payment History
+        </h4>
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-12">
+        <div class="row" style="font-size: 0.75rem !important">
+            <div class="col-12">
+                <strong>
+                    Invoice total:
+                </strong>
+                <span th:text="${#numbers.formatCurrency(viewModel.getLineItemsTotal())}"></span>
+            </div>
+        </div>
+        <div class="row mb-3" style="font-size: 0.75rem !important">
+            <div class="col-12">
+                <strong>
+                    Balance as of <span th:text="${#dates.format(#dates.createNow(), 'MM/dd/yyyy')}"></span>:
+                </strong>
+                <span th:text="${#numbers.formatCurrency(viewModel.paymentHistory.remainingBalance)}"></span>
+            </div>
+        </div>
+        <div th:if="${#lists.isEmpty(viewModel.paymentHistory.paymentHistoryRows)}" class="alert alert-warning">
+            <i class="fa fa-warning"></i>
+            No payments have been recorded against this invoice.
+        </div>
+        <div class="row" th:unless="${#lists.isEmpty(viewModel.paymentHistory.paymentHistoryRows)}">
+            <div class="col-12">
+                <table class="table table-sm table-condensed table-borderless" style="font-size: 0.75rem !important">
+                    <thead>
+                        <th style="width: 20%">Date Collected</th>
+                        <th style="width: 15%">Amount</th>
+                        <th style="width: 50%">Notes</th>
+                        <th style="width: 20%">Balance</th>
+                    </thead>
+                    <tbody>
+                        <tr th:each="row : ${viewModel.paymentHistory.paymentHistoryRows}">
+                            <td th:text="${#dates.format(row.payment.dateCollected, 'MM/dd/yyyy')}"></td>
+                            <td th:text="${#numbers.formatCurrency(row.payment.amount)}"></td>
+                            <td th:text="${row.payment.notes}"></td>
+                            <td th:text="${#numbers.formatCurrency(row.balance)}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
