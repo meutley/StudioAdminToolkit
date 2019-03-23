@@ -84,6 +84,7 @@
                                     class="form-control form-control-sm"
                                     rows="2"
                                     th:value="${viewModel.payment.notes}"
+                                    th:field="*{viewModel.payment.notes}"
                                     th:classappend="${#fields.hasErrors('viewModel.payment.notes')} ? is-invalid : ''"></textarea>
                                 <div class="invalid-feedback">
                                     <span class="text-danger" th:if="${#fields.hasErrors('viewModel.payment.notes')}" th:errors="*{viewModel.payment.notes}"></span>

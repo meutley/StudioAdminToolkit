@@ -87,3 +87,6 @@ CREATE TABLE invoice_payment (
     CONSTRAINT invoice_payment_invoice_id_fkey FOREIGN KEY (invoice_id)
         REFERENCES invoice (id)
 );
+
+CREATE INDEX ix_invoice_payment_invoice_id
+    ON invoice_payment (invoice_id);

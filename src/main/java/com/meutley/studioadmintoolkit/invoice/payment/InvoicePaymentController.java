@@ -63,6 +63,7 @@ public class InvoicePaymentController {
         viewModel.setClientName(invoice.getClient().getName());
         viewModel.setInvoiceNumber(invoice.getInvoiceNumber());
         viewModel.setInvoiceId(invoiceId);
+        viewModel.setIsNew(viewModel.getPayment().getId() == 0);
 
         redirectAttributes.addAttribute("invoiceId", invoiceId);
         if (bindingResult.hasErrors()) {
