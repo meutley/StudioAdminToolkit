@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.meutley.studioadmintoolkit.core.EntityNotFoundException;
 import com.meutley.studioadmintoolkit.invoice.InvoiceDto;
 import com.meutley.studioadmintoolkit.invoice.InvoiceService;
 import com.meutley.studioadmintoolkit.invoice.payment.InvoicePaymentService;
@@ -155,10 +154,6 @@ public class ClientInvoiceController {
     @GetMapping("/{id}/view")
     public String view(@PathVariable int clientId, @PathVariable int id, Model model) {
         InvoiceDto invoice = this.invoiceService.getById(id);
-        if (invoice.getClient().getId() != clientId) {
-            throw new EntityNotFoundException(id);
-        }
-
         ViewClientInvoiceViewModel viewModel = new ViewClientInvoiceViewModel();
         viewModel.setClient(invoice.getClient());
         viewModel.setInvoice(invoice);
